@@ -1,5 +1,6 @@
 package com.vbg;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class Persons {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
-		this.emails = emails;
+		this.emails = new ArrayList<>(emails);
 	}
 	
 	public UUID getUuid() {

@@ -10,16 +10,45 @@ import java.util.UUID;
 
 public class CSVParse {
 	
+	// Helper method to safely parse UUIDs (avoid crashes due to invalid UUIDs).
+	private static UUID safeParseUUID(String uuidStr) {
+		if(uuidStr == null || uuidStr.trim().isEmpty()) {
+			System.err.println("Skipping empty UUID field.");
+			return null; //Assign a temporary UUID instead of a null
+		}
+		try {
+			return UUID.fromString(uuidStr.trim());
+		} catch (IllegalArgumentException e) {
+			System.err.println("Invalid UUID format: " + uuidStr);
+			return null;
+		}
+	}
+	
 	public static List<Persons> parsePersons(String filePath) throws IOException {
 		List<Persons> persons = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
 		
 		for(int i = 1; i < lines.size(); i++) {
+			String line = lines.get(i).trim();
+			if(line.isEmpty()) {
+				System.err.println("Skipping completely empty row at line " + (i + 1));
+				continue;
+			}
+			
 			String[] tokens = lines.get(i).split(",", -1);
-			UUID uuid = UUID.fromString(tokens[0]);
-			String firstName = tokens[1];
-			String lastName = tokens[2];
-			String phoneNumber = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3] : null;
+			
+			//Skips completely empty or malformed rows
+			if(tokens.length < 3) {
+				System.err.println("Skipping malformed row: " + Arrays.toString(tokens));
+				continue;
+			}
+			
+			UUID uuid = safeParseUUID(tokens[0]);
+			if(uuid == null) continue;
+			
+			String firstName = tokens[1].trim();
+			String lastName = tokens[2].trim();
+			String phoneNumber = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
 			List<String> emails = tokens.length > 4 && !tokens[4].isEmpty() ? Arrays.asList(tokens[4].split(",")) : new ArrayList<>();
 			
 			persons.add(new Persons(uuid, firstName, lastName, phoneNumber, emails));
@@ -34,16 +63,19 @@ public class CSVParse {
 		for(int i = 1; i < lines.size(); i++) {
 			String[] tokens = lines.get(i).split(",", -1);
 			
-			UUID companyUuid = UUID.fromString(tokens[0]);
-			UUID contactUuid = UUID.fromString(tokens[1]);
-			String name = tokens[2];
+			UUID companyUuid = safeParseUUID(tokens[0]);
+			UUID contactUuid = safeParseUUID(tokens[1]);
+			if(companyUuid == null || contactUuid ==null) continue; //Skips invalid UUIDs
 			
-			String street = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3] : "Unknown";
-			String city = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4] : "Unknown";
-			String state = tokens.length > 5 && !tokens[5].isEmpty() ? tokens[5] : "Unknown";
-			String zip = tokens.length > 6 && !tokens[6].isEmpty() ? tokens[6] : "00000";
+			String name = tokens[2].trim();
 			
-			Address address = new Address(street, city, state, zip); //Creates and address object
+			//Ensures all address fields exist before creating the Address object.
+			String street = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : "Unknown";
+			String city = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : "Unknown";
+			String state = tokens.length > 5 && !tokens[5].isEmpty() ? tokens[5].trim() : "Unknown";
+			String zip = tokens.length > 6 && !tokens[6].isEmpty() ? tokens[6].trim() : "00000";
+			
+			Address address = new Address(street, city, state, zip); //Creates an address object
 			
 			companies.add(new Companies(companyUuid, contactUuid, name, address));
 		}
@@ -55,8 +87,22 @@ public class CSVParse {
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
 		
 		for(int i = 1; i < lines.size(); i++) {
+			String line = lines.get(i).trim();
+			if(line.isEmpty()) {
+				System.err.println("Skipping empty row at line " + (i + 1));
+				continue;
+			}
+			
 			String[] tokens = lines.get(i).split(",", -1);
-			UUID uuid = UUID.fromString(tokens[0]);
+			
+			if(tokens.length < 3) {
+				System.err.println("Skipping malformed item row: " + Arrays.toString(tokens));
+				continue;
+			}
+			
+			UUID uuid = safeParseUUID(tokens[0]);
+			if(uuid == null) continue; //Skips invalid UUIDs
+			
 			char type = tokens[1].charAt(0);
 			String name = tokens[2];
 			String extra1 = null;
@@ -64,15 +110,15 @@ public class CSVParse {
 			
 			switch(type) {
 			case 'E':
-				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3] : null;
-				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4] : null;
+				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
+				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : null;
 				break;
 			case 'M':
-				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3] : null;
-				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4] : null;
+				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
+				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : null;
 				break;
 			case 'C':
-				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3] : null;
+				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
 				break;
 			default:
 				System.err.println("Unknown item type: " + type);
