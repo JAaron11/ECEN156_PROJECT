@@ -1,102 +1,102 @@
 [
   {
-    "uuid": "2dd5220e-6779-4fe7-81d2-b79dcbff3415",
+    "uuid": "f8b87cbc-cd4e-441f-a4db-62a2d963d399",
     "type": "E",
-    "name": "Dragline",
-    "extraField1": "DX200b",
-    "extraField2": "347125"
+    "name": "Scraper",
+    "extraField1": "SC6754",
+    "extraField2": "9576"
   },
   {
-    "uuid": "4c0c851d-0466-42c8-8631-0b414db5be98",
-    "type": "E",
-    "name": "Bulldozer",
-    "extraField1": "XPXY4",
-    "extraField2": "125500"
-  },
-  {
-    "uuid": "984bac8d-96f7-4d6b-9948-1cabae15ba51",
+    "uuid": "afc4727a-1a46-4aa2-a68e-00024e73ab1c",
     "type": "E",
     "name": "Compactor",
-    "extraField1": "FLT100",
-    "extraField2": "4500"
+    "extraField1": "CAT89",
+    "extraField2": "1342"
   },
   {
-    "uuid": "50e6f93f-3792-459f-b1c6-b512b994ff2b",
+    "uuid": "fbbdbb1a-de8e-40aa-bd1d-84f2b28d83d0",
+    "type": "E",
+    "name": "Dragline",
+    "extraField1": "DB12",
+    "extraField2": "67089"
+  },
+  {
+    "uuid": "17807169-4f0a-4602-82e1-e561c96c762b",
+    "type": "E",
+    "name": "Scraper",
+    "extraField1": "SCX3456",
+    "extraField2": "20134"
+  },
+  {
+    "uuid": "d675bc7a-5460-401f-9fd9-86379f438d9f",
     "type": "E",
     "name": "Dump Truck",
-    "extraField1": "DUMPRX5000",
-    "extraField2": "90450"
+    "extraField1": "DT730",
+    "extraField2": "120455"
   },
   {
-    "uuid": "e9afb98d-ac99-4974-a274-2dca5c1238f5",
-    "type": "E",
-    "name": "Skid-Steer",
-    "extraField1": "S4325",
-    "extraField2": "8500"
-  },
-  {
-    "uuid": "ac47e0f6-5d5b-49fe-af54-a6625a6374a8",
+    "uuid": "50d5027a-1efd-4257-85e5-7b07edd89007",
     "type": "M",
-    "name": "concrete",
-    "extraField1": "bag",
-    "extraField2": "40"
-  },
-  {
-    "uuid": "72e157ac-5b46-4b3b-b86b-599a89be7289",
-    "type": "M",
-    "name": "sand",
-    "extraField1": "ton",
-    "extraField2": "1500"
-  },
-  {
-    "uuid": "97dc9f91-c009-4e8d-b08c-3d4d0ded0bad",
-    "type": "M",
-    "name": "nails",
-    "extraField1": "box",
-    "extraField2": "15"
-  },
-  {
-    "uuid": "30bebf58-ba44-4bef-885f-8fccb7db9544",
-    "type": "M",
-    "name": "lumber",
-    "extraField1": "lft",
-    "extraField2": "8"
-  },
-  {
-    "uuid": "8c8bbffa-a939-44f4-98b7-66837e7d16e9",
-    "type": "M",
-    "name": "drywall",
+    "name": "Plastic",
     "extraField1": "sheet",
-    "extraField2": "35"
+    "extraField2": "10"
   },
   {
-    "uuid": "38bebacb-a3ca-459e-a71f-8e5826a2f7fa",
-    "type": "C",
-    "name": "foundation pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "uuid": "2bd90c2e-23b6-4238-a28c-e049ed153c63",
+    "type": "M",
+    "name": "Plexiglass",
+    "extraField1": "crate",
+    "extraField2": "1349"
   },
   {
-    "uuid": "699607c3-d9db-4aef-a8ab-b3a6cab21e12",
-    "type": "C",
-    "name": "footing pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "uuid": "6119fe42-2dc1-43d9-a8ad-9bb144b79c74",
+    "type": "M",
+    "name": "Wood",
+    "extraField1": "pallet",
+    "extraField2": "30"
   },
   {
-    "uuid": "ce9fc7f6-8be8-48cb-9236-7873dbf9b2b7",
-    "type": "C",
-    "name": "concrete pad pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "uuid": "a99cf41d-0e03-4f94-aa18-c3383d71cb79",
+    "type": "M",
+    "name": "Aluminum",
+    "extraField1": "roll",
+    "extraField2": "120"
   },
   {
-    "uuid": "97ee84b8-dc93-4db2-84bd-48e72a7f3131",
-    "type": "C",
-    "name": "electric install",
-    "extraField1": "a8bae950-96ac-43a9-9a29-729db552e981"
+    "uuid": "bebcb031-4b80-4e81-acd3-f03452044627",
+    "type": "M",
+    "name": "Stone",
+    "extraField1": "gravel",
+    "extraField2": "43"
   },
   {
-    "uuid": "b118fa82-14cf-46f4-8574-41e583badc27",
+    "uuid": "aabea3e4-5367-4fd2-a65a-9d2d2a3fbc4b",
     "type": "C",
-    "name": "generator install",
-    "extraField1": "a8bae950-96ac-43a9-9a29-729db552e981"
+    "name": "Curb \u0026 Gutter",
+    "extraField1": "1c04b600-0fff-4b19-af21-8f82086f9958"
+  },
+  {
+    "uuid": "0d808658-c672-405a-b169-f5906b2b8bb1",
+    "type": "C",
+    "name": "Wall Protection",
+    "extraField1": "1c04b600-0fff-4b19-af21-8f82086f9958"
+  },
+  {
+    "uuid": "6336f3cd-5ced-4c32-8ca3-88a26544f4fc",
+    "type": "C",
+    "name": "Epoxy Flooring",
+    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b"
+  },
+  {
+    "uuid": "40a02aa5-22fd-4c7b-9300-15a3688a173f",
+    "type": "C",
+    "name": "Elevator",
+    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b"
+  },
+  {
+    "uuid": "c39e995e-931d-480f-b9f2-bfe1723d7e69",
+    "type": "C",
+    "name": "Retaining Wall and Brick Pavers",
+    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b"
   }
 ]

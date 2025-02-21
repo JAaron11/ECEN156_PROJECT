@@ -1,16 +1,16 @@
-uuid,type,name,field(s)
-2dd5220e-6779-4fe7-81d2-b79dcbff3415,E,Dragline,DX200b,347125
-4c0c851d-0466-42c8-8631-0b414db5be98,E,Bulldozer,XPXY4,125500
-984bac8d-96f7-4d6b-9948-1cabae15ba51,E,Compactor,FLT100,4500
-50e6f93f-3792-459f-b1c6-b512b994ff2b,E,Dump Truck,DUMPRX5000,90450
-e9afb98d-ac99-4974-a274-2dca5c1238f5,E,Skid-Steer,S4325,8500
-ac47e0f6-5d5b-49fe-af54-a6625a6374a8,M,concrete,bag,40
-72e157ac-5b46-4b3b-b86b-599a89be7289,M,sand,ton,1500
-97dc9f91-c009-4e8d-b08c-3d4d0ded0bad,M,nails,box,15
-30bebf58-ba44-4bef-885f-8fccb7db9544,M,lumber,lft,8
-8c8bbffa-a939-44f4-98b7-66837e7d16e9,M,drywall,sheet,35
-38bebacb-a3ca-459e-a71f-8e5826a2f7fa,C,foundation pour,0673a09a-5cc1-4269-88f2-e665c2f3f33c
-699607c3-d9db-4aef-a8ab-b3a6cab21e12,C,footing pour,0673a09a-5cc1-4269-88f2-e665c2f3f33c
-ce9fc7f6-8be8-48cb-9236-7873dbf9b2b7,C,concrete pad pour,0673a09a-5cc1-4269-88f2-e665c2f3f33c
-97ee84b8-dc93-4db2-84bd-48e72a7f3131,C,electric install,a8bae950-96ac-43a9-9a29-729db552e981
-b118fa82-14cf-46f4-8574-41e583badc27,C,generator install,a8bae950-96ac-43a9-9a29-729db552e981
+uuid,type,name,field(s),
+f8b87cbc-cd4e-441f-a4db-62a2d963d399,E,Scraper,SC6754,9576
+afc4727a-1a46-4aa2-a68e-00024e73ab1c,E,Compactor,CAT89,1342
+fbbdbb1a-de8e-40aa-bd1d-84f2b28d83d0,E,Dragline,DB12,67089
+17807169-4f0a-4602-82e1-e561c96c762b,E,Scraper,SCX3456,20134
+d675bc7a-5460-401f-9fd9-86379f438d9f,E,Dump Truck,DT730,120455
+50d5027a-1efd-4257-85e5-7b07edd89007,M,Plastic,sheet,10
+2bd90c2e-23b6-4238-a28c-e049ed153c63,M,Plexiglass,crate,1349
+6119fe42-2dc1-43d9-a8ad-9bb144b79c74,M,Wood,pallet,30
+a99cf41d-0e03-4f94-aa18-c3383d71cb79,M,Aluminum,roll,120
+bebcb031-4b80-4e81-acd3-f03452044627,M,Stone,gravel,43
+aabea3e4-5367-4fd2-a65a-9d2d2a3fbc4b,C,Curb & Gutter,1c04b600-0fff-4b19-af21-8f82086f9958,
+0d808658-c672-405a-b169-f5906b2b8bb1,C,Wall Protection,1c04b600-0fff-4b19-af21-8f82086f9958,
+6336f3cd-5ced-4c32-8ca3-88a26544f4fc,C,Epoxy Flooring,48185aae-4cdf-4eea-84cf-efff49610f7b,
+40a02aa5-22fd-4c7b-9300-15a3688a173f,C,Elevator,48185aae-4cdf-4eea-84cf-efff49610f7b,
+c39e995e-931d-480f-b9f2-bfe1723d7e69,C,Retaining Wall and Brick Pavers,48185aae-4cdf-4eea-84cf-efff49610f7b,
