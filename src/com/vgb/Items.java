@@ -2,13 +2,15 @@ package com.vgb;
 
 import java.util.UUID;
 
+// Creates a Items class with an ability to call it.
+
 public class Items {
 	private UUID uuid;
 	private char type;
 	private String name;
 	private String extraField1;
 	private String extraField2;
-	
+
 	public Items(UUID uuid, char type, String name, String extraField1, String extraField2) {
 		this.uuid = uuid;
 		this.type = type;
@@ -56,9 +58,11 @@ public class Items {
 	public void setField2(String field2) {
 		this.extraField2 = field2;
 	}
-	
+
+	// Output
 	public String toString() {
-		return "Item{uuid=" + uuid + ", type=" + type + ", name=" + name + "', extraField1=" + extraField1 + ", extraField2=" + extraField2 + "'}";
+		return "Item{uuid=" + uuid + ", type=" + type + ", name=" + name + "', extraField1=" + extraField1
+				+ ", extraField2=" + extraField2 + "'}";
 	}
-	
+
 }

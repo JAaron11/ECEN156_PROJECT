@@ -2,13 +2,15 @@ package com.vgb;
 
 import java.util.UUID;
 
+// Creates a Companies class and a method of calling it.
+
 public class Companies {
 
 	private UUID companyUuid;
 	private UUID contactUuid;
 	private String name;
 	private Address address;
-	
+
 	public Companies(UUID companyUuid, UUID contactUuid, String name, Address address) {
 		this.companyUuid = companyUuid;
 		this.contactUuid = contactUuid;
@@ -47,9 +49,10 @@ public class Companies {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
+	// Output
 	public String toString() {
 		return "Company{name='" + name + "', address=" + address + "}";
 	}
-	
+
 }
