@@ -110,26 +110,29 @@ public class CSVParse {
 
 			char type = tokens[1].charAt(0);
 			String name = tokens[2];
+			
 			String extra1 = null;
 			String extra2 = null;
-
+			
 			switch (type) {
 			case 'E':
 				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
 				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : null;
+				items.add(new Equipment(uuid, type, name, extra1, extra2));
 				break;
 			case 'M':
 				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
 				extra2 = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : null;
+				items.add(new Material(uuid, type, name, extra1, extra2));
 				break;
 			case 'C':
 				extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
+				items.add(new Contract(uuid, type, name, extra1));
 				break;
 			default:
 				System.err.println("Unknown item type: " + type);
 			}
 
-			items.add(new Items(uuid, type, name, extra1, extra2));
 		}
 		return items;
 	}
