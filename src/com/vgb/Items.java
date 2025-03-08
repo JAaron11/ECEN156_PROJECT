@@ -9,19 +9,17 @@ public abstract class Items {
 	protected char type;
 	protected String name;
 	protected String extraField1;
-	protected String extraField2;
+	protected double extraField2;
 	protected double price;
 
-	public Items(UUID uuid, char type, String name, String extraField1, String extraField2, double price) {
+	public Items(UUID uuid, char type, String name, String extraField1, double extraField2) {
 		this.uuid = uuid;
 		this.type = type;
 		this.name = name;
 		this.extraField1 = extraField1;
 		this.extraField2 = extraField2;
-		this.price = price;
 	}
-
-
+	
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -38,7 +36,7 @@ public abstract class Items {
 		return extraField1;
 	}
 
-	public String getField2() {
+	public double getField2() {
 		return extraField2;
 	}
 
@@ -54,21 +52,27 @@ public abstract class Items {
 				+ ", extraField2=" + extraField2 + "'}";
 	}
 	
-	public static Items createItem(String type, String[] data) {
-		UUID uuid = UUID.fromString(data[0]);
-		String name = data[2];
-		double price = data.length > 3 && !data[3].isEmpty() ? Double.parseDouble(data[3]) : 0.0;
-		String extra1 = data.length > 4 ? data[4] : null;
-		int quantity = data.length > 5 && !data[5].isEmpty() ? Integer.parseInt(data[5]) : 1; // For Material
+	public static Items createItem(String[] tokens) {
+		UUID uuid = UUID.fromString(tokens[0]);
+		char type = tokens[1].charAt(0);
+		String name = tokens[2];
+		String extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
+		String extra2Str = tokens.length > 4 ? tokens [4] : "";
+		int extra2 = (extra2Str != null && !extra2Str.trim().isEmpty())
+					 ? Integer.parseInt(extra2Str.trim())
+					 : 0;
 		
-		return switch (type) {
-		case "E" -> new Equipment(uuid, name, price, extra1);
-		case "M" -> new Material(uuid, name, price, extra1, quantity);
-		case "C" -> new Contract(uuid, name, extra1, price);
-		default -> throw new IllegalArgumentException("Unknown item type: " + type);
-	};
-	
+		switch (type) {
+		case 'E':
+			return new Equipment(uuid, type, name, extra1, extra2);
+		case 'M':
+			return new Equipment(uuid, type, name, extra1, extra2);
+		case 'C':
+			return new Equipment(uuid, type, name, extra1, 0);
+		default:
+			throw new IllegalArgumentException("Unknown item type: " + type);
+		}
 	}
-
 }
+
 

@@ -2,24 +2,39 @@ package com.vgb;
 
 import java.util.UUID;
 
-public class Material extends Items{
-	private String unit;
+public class Material extends Items {
+	
 	private int quantity;
-	
-	public Material(UUID uuid, String name, double price, String unit, int quantity) {
-		super(uuid, 'M', name, unit, null, price);
-		this.unit = unit;
-		this.quantity = quantity;
-	}
 
-	public double calculateTotalCost() {
-		double total = getPrice() * quantity;
-		double tax = total * 0.0715;
-		return Math.round((total + tax) * 100) / 100.0;
-	}
-	
-	public double calculateTax() {
-		return getPrice() * quantity * 0.0715;
-	}
+    public Material(UUID uuid, char type, String name, String extraField1, double extraField2) {
+        super(uuid, 'M', name, extraField1, extraField2);
+        this.quantity = 0; // default value until set explicitly
+    }
+    
+    public void setQuantity(int quantity) {
+    	this.quantity = quantity;
+    }
+    
+    public int getQuantity() {
+    	return quantity;
+    }
+    
+    public double getBaseCost() {
+    	double unitPrice = getField2();
+    	double baseCost = unitPrice * quantity;
+    	return Math.round(baseCost * 100.0) / 100.0;
+    }
 
+    public double calculateTotalCost() {
+        double unitPrice = getField2();
+        double cost = unitPrice * quantity;
+        double tax = cost * 0.0715;
+        return Math.round((cost + tax) * 100) / 100.0;
+    }
+
+    public double calculateTax() {
+    	double baseCost = getBaseCost();
+    	double tax = baseCost * 0.0715;
+        return Math.round(tax * 100.0) / 100.0;
+    }
 }
