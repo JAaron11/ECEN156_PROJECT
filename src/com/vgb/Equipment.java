@@ -2,7 +2,10 @@ package com.vgb;
 
 import java.util.UUID;
 
-public class Equipment extends Items {
+public class Equipment extends Item {
+	
+	protected String extraField1;
+	protected double extraField2;
 
 	/**
 	 * Constructs an Equipment instance.
@@ -16,7 +19,7 @@ public class Equipment extends Items {
         super(uuid, 'E', name, extraField1, extraField2);
     }
     
-    public double getCost() {
+    public double getPrice() {
     	return extraField2;
     }
 

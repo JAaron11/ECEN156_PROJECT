@@ -36,7 +36,7 @@ public class EntityTests {
 		double expectedCost = cost;
 		double expectedTax = Math.round(cost * 0.0525 * 100.0) / 100.0;
 
-		double actualCost = equip.getCost(); 
+		double actualCost = equip.getPrice(); 
 		double actualTax = equip.calculateTax();
 
 		//Utilizes assertEquals with the TOLERANCE to compare

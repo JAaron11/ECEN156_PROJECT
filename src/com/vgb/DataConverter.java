@@ -21,7 +21,7 @@ public class DataConverter {
 
 		List<Persons> persons = CSVParse.parsePersons(activeFolder + "/Persons.csv");
 		List<Companies> companies = CSVParse.parseCompanies(activeFolder + "/Companies.csv");
-		List<Items> items = CSVParse.parseItems(activeFolder + "/Items.csv");
+		List<Item> items = CSVParse.parseItems(activeFolder + "/Items.csv");
 
 		// Serialize to JSON
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -39,7 +39,7 @@ public class DataConverter {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("person", Persons.class);
 		xstream.alias("company", Companies.class);
-		xstream.alias("item", Items.class);
+		xstream.alias("item", Item.class);
 
 		xstream.registerConverter(new CollectionConverter(xstream.getMapper()));
 

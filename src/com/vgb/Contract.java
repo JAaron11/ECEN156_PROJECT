@@ -2,7 +2,7 @@ package com.vgb;
 
 import java.util.UUID;
 
-public class Contract extends Items {
+public class Contract extends Item {
 
 	private double contractAmount = 0.0;
 	
@@ -11,10 +11,6 @@ public class Contract extends Items {
 		super(uuid, 'C', name, extraField1, 0);
 		}
 	
-	public void setContractAmount(double amount) {
-		this.contractAmount = amount;
-	}
-	
 	public double getContractAmount() {
 		return contractAmount;
 	}
@@ -22,5 +18,17 @@ public class Contract extends Items {
 	public double calculateTotalCost() {
 		// Simply returns the contractAmount (no taxes)
 		return contractAmount;
+	}
+
+	@Override
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTax() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

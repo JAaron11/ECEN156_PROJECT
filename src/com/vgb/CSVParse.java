@@ -110,8 +110,31 @@ public class CSVParse {
 	 * @return 	List of Items objects
 	 * @throws 	IOException if file reading fails
 	 */
-	public static List<Items> parseItems(String filePath) throws IOException {
-		List<Items> items = new ArrayList<>();
+	
+	public static Item createItem(String[] tokens) {
+		UUID uuid = UUID.fromString(tokens[0]);
+		char type = tokens[1].charAt(0);
+		String name = tokens[2];
+		String extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
+		String extra2Str = tokens.length > 4 ? tokens [4] : "";
+		int extra2 = (extra2Str != null && !extra2Str.trim().isEmpty())
+					 ? Integer.parseInt(extra2Str.trim())
+					 : 0;
+		
+		switch (type) {
+		case 'E':
+			return new Equipment(uuid, type, name, extra1, extra2);
+		case 'M':
+			return new Equipment(uuid, type, name, extra1, extra2);
+		case 'C':
+			return new Equipment(uuid, type, name, extra1, 0);
+		default:
+			throw new IllegalArgumentException("Unknown item type: " + type);
+		}
+	}
+	
+	public static List<Item> parseItems(String filePath) throws IOException {
+		List<Item> items = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
 
 		for (int i = 1; i < lines.size(); i++) {
@@ -133,7 +156,7 @@ public class CSVParse {
 				continue; // Skips invalid UUIDs
 
 			try {
-				Items item = Items.createItem(tokens);
+				Item item = createItem(tokens);
 				items.add(item);
 			} catch (IllegalArgumentException e) {
 				System.err.println("Skipping row due to error: " + e.getMessage());

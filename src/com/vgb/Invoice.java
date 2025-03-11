@@ -1,12 +1,15 @@
 package com.vgb;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class Invoice {
 	private UUID invoiceId;
-	private List<Items> items;
+	private Date invoiceDate;
+	private String Customer;
+	private List<Item> items;
 	
 	/**
 	 * Constructs a new Invoice with a unique ID and an empty list of items.
@@ -20,7 +23,7 @@ public class Invoice {
 	 * Adds an item to the invoice.
 	 * @param items
 	 */
-	public void addItems(Items items) {
+	public void addItems(Item items) {
 		this.items.add(items);
 	}
 	/**
@@ -29,10 +32,10 @@ public class Invoice {
 	 */
 	public double getSubtotal() {
 		double subtotal = 0.0;
-        for (Items item : items) {
+        for (Item item : items) {
             if (item instanceof Equipment) {
                 // Equipment: assume getCost() returns the base cost.
-                subtotal += ((Equipment)item).getCost();
+                subtotal += ((Equipment)item).getPrice();
             } else if (item instanceof Lease) {
                 // Lease: assume getLeaseBaseCost() returns the base lease cost before tax.
                 subtotal += ((Lease)item).getLeaseBaseCost();
@@ -56,7 +59,8 @@ public class Invoice {
      */
     public double getTaxTotal() {
         double taxTotal = 0.0;
-        for (Items item : items) {
+        for (Item item : items) {
+        	taxTotal += item.getTax();
             if (item instanceof Equipment) {
                 taxTotal += ((Equipment)item).calculateTax();
             } else if (item instanceof Lease) {
@@ -86,7 +90,7 @@ public class Invoice {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Items item : items) {
+        for (Item item : items) {
             sb.append(item.toString()).append("\n");
         }
         sb.append("Subtotal: ").append(getSubtotal()).append("\n");
@@ -96,7 +100,7 @@ public class Invoice {
     }
     
 	public double calculateTotalInvoiceCost() {
-		return items.stream().mapToDouble(Items::calculateTotalCost).sum();
+		return items.stream().mapToDouble(Item::calculateTotalCost).sum();
 	}
 	
 	public void printInvoice() {

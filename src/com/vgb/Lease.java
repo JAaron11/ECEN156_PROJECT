@@ -7,7 +7,10 @@ import java.util.UUID;
 /**
  * Represents a lease agreement for an item, with a defined start and end date.
  */
-public class Lease extends Items{
+public class Lease extends Item{
+	
+	protected String extraField1;
+	protected double extraField2;
 	
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -55,4 +58,16 @@ public class Lease extends Items{
     public String toString() {
         return super.toString() + ", Lease Period: " + startDate + " to " + endDate;
     }
+
+	@Override
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTax() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

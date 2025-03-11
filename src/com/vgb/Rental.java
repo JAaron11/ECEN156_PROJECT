@@ -2,7 +2,10 @@ package com.vgb;
 
 import java.util.UUID;
 
-public class Rental extends Items {
+public class Rental extends Item {
+	
+	protected String extraField1;
+	protected double extraField2;
 
     private double hours;
     
@@ -55,4 +58,16 @@ public class Rental extends Items {
     public String toString() {
         return super.toString() + ", Rental Hours: " + hours;
     }
+
+	@Override
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTax() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

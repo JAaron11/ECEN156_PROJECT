@@ -2,7 +2,10 @@ package com.vgb;
 
 import java.util.UUID;
 
-public class Material extends Items {
+public class Material extends Item {
+	
+	protected String extraField1;
+	protected double extraField2;
 	
 	private int quantity;
 
@@ -21,13 +24,13 @@ public class Material extends Items {
     
     // Cost before tax
     public double getBaseCost() {
-    	double unitPrice = getField2();
+    	double unitPrice = getPrice();
     	double baseCost = unitPrice * quantity;
     	return Math.round(baseCost * 100.0) / 100.0;
     }
     // Total cost including taxes at rate of 7.15%.
     public double calculateTotalCost() {
-        double unitPrice = getField2();
+        double unitPrice = getPrice();
         double cost = unitPrice * quantity;
         double tax = cost * 0.0715;
         return Math.round((cost + tax) * 100) / 100.0;
@@ -38,4 +41,16 @@ public class Material extends Items {
     	double tax = baseCost * 0.0715;
         return Math.round(tax * 100.0) / 100.0;
     }
+
+	@Override
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTax() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
