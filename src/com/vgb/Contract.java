@@ -3,7 +3,7 @@ package com.vgb;
 import java.util.UUID;
 
 public class Contract extends Items {
-	//Field to store the actual contract amount (default of 0)
+
 	private double contractAmount = 0.0;
 	
 	public Contract(UUID uuid, char type, String name, String extraField1) {

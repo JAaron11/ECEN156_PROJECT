@@ -4,6 +4,14 @@ import java.util.UUID;
 
 public class Equipment extends Items {
 
+	/**
+	 * Constructs an Equipment instance.
+	 * @param uuid 
+	 * @param type Type identifier ('E' for equipment)
+	 * @param name Name of the equipment
+	 * @param extraField1 Model name of the equipment
+	 * @param extraField2 Cost of the equipment
+	 */
     public Equipment(UUID uuid, char type, String name, String extraField1, int extraField2) {
         super(uuid, 'E', name, extraField1, extraField2);
     }
@@ -13,7 +21,7 @@ public class Equipment extends Items {
     }
 
     public double calculateTax() {
-        return Math.round((extraField2 * 0.0525) * 100.0) / 100.0;
+        return Math.round((extraField2 * 0.0525) * 100.0) / 100.0; // Tax rate is fixed at 5.25%.
     }
     
     public double calculateTotalCost() {
@@ -23,7 +31,6 @@ public class Equipment extends Items {
     }
     
     public String toString() {
-    	//Ensure the string representation includes the name, model and cost formatted to two decimals.
     	return "Equipment{name='" + name + "', model='" + extraField1 + "', cost=" + String.format("%.2f", (double) extraField2) + "}";
     }
 }

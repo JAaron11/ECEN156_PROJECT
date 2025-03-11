@@ -8,15 +8,25 @@ public class Invoice {
 	private UUID invoiceId;
 	private List<Items> items;
 	
+	/**
+	 * Constructs a new Invoice with a unique ID and an empty list of items.
+	 */
 	public Invoice() {
 		this.invoiceId = UUID.randomUUID();
 		this.items = new ArrayList<>();
 	}
 	
+	/**
+	 * Adds an item to the invoice.
+	 * @param items
+	 */
 	public void addItems(Items items) {
 		this.items.add(items);
 	}
-	
+	/**
+	 * Calculates the subtotal of all items in the invoice.
+	 * @return The subtotal rounded to two decimal places
+	 */
 	public double getSubtotal() {
 		double subtotal = 0.0;
         for (Items item : items) {
@@ -42,6 +52,7 @@ public class Invoice {
 	
 	/**
      * Returns the total tax for the invoice.
+     * @return The total tax amount rounded to two decimal places
      */
     public double getTaxTotal() {
         double taxTotal = 0.0;
@@ -62,11 +73,16 @@ public class Invoice {
 	
     /**
      * Returns the grand total: subtotal + tax total.
+     * @return The final total cost of the invoice rounded to two decimal places
      */
     public double getGrandTotal() {
         return Math.round((getSubtotal() + getTaxTotal()) * 100.0) / 100.0;
     }
 
+    /**
+     * Provides a string representation of the invoice
+     * @return A formatted string representation of the invoice
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

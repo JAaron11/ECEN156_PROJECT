@@ -2,7 +2,9 @@ package com.vgb;
 
 import java.util.UUID;
 
-// Creates a Items class with an ability to call it.
+/**
+ * Abstract base class representing an item with common attributes and behavior.
+ */
 
 public abstract class Items {
 	protected UUID uuid;
@@ -46,12 +48,18 @@ public abstract class Items {
 	
 	public abstract double calculateTotalCost(); //Force subclasses to implement cost calculation
 
-	// Output
+	// Output to string
 	public String toString() {
 		return "Item{uuid=" + uuid + ", type=" + type + ", name=" + name + "', extraField1=" + extraField1
 				+ ", extraField2=" + extraField2 + "'}";
 	}
 	
+	/**
+	 * Factory method to create an Item instance based on the type.
+	 * @param tokens Array of strings representing item attributes
+	 * @return An instance of the appropriate Item subclass
+	 * @throws IllegalArgumentException if the item type is unknown
+	 */
 	public static Items createItem(String[] tokens) {
 		UUID uuid = UUID.fromString(tokens[0]);
 		char type = tokens[1].charAt(0);

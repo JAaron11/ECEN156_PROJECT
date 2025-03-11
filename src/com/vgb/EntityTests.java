@@ -20,38 +20,33 @@ public class EntityTests {
 	/**
 	 * Creates an instance of a piece of equipment and tests if
 	 * its cost and tax calculations are correct.
-	 *
-	 * TODO: finish implementation
 	 */
 	@Test
 	public void testEquipment() {
 
-		//data values
+		// Data values
 		UUID uuid = UUID.randomUUID();;
-		String name = "Backhoe 3000";
-		String model = "BH30X2";
-		double cost = 95125.00;
+		String name = "Dump Truck";
+		String model = "DT730";
+		double cost = 120455.00;
 
-		//1. TODO: Create an instance of equipment with the data values
 		Equipment equip = new Equipment(uuid, 'E', name, model, (int) cost);
 
-		//2. Establish the expected cost and tax (rounded to nearest cent)
+		// Expected values
 		double expectedCost = cost;
 		double expectedTax = Math.round(cost * 0.0525 * 100.0) / 100.0;
 
-		//3. TODO: Invoke methods to determine the cost/tax:
-		double actualCost = equip.getCost(); // For example, a getter that returns cost.
-		double actualTax = equip.calculateTax(); // For example, computes cost * 0.0525.
+		double actualCost = equip.getCost(); 
+		double actualTax = equip.calculateTax();
 
-		//4. Use assertEquals with the TOLERANCE to compare:
+		//Utilizes assertEquals with the TOLERANCE to compare
 		assertEquals(expectedCost, actualCost, TOLERANCE);
 		assertEquals(expectedTax, actualTax, TOLERANCE);
 		
-		// ensure that the string representation contains necessary elements
 		String s = equip.toString();
-		assertTrue(s.contains("Backhoe 3000"));
-		assertTrue(s.contains("BH30X2"));
-		// Format the cost to two decimal places and check its string representation.
+		assertTrue(s.contains("Dump Truck"));
+		assertTrue(s.contains("DT730"));
+		// Formats the cost to two decimal places and checks its string representation.
 		assertTrue(s.contains(String.format("%.2f", cost)));
 
 	}
@@ -59,16 +54,16 @@ public class EntityTests {
 	@Test
 	public void testLease() {
 		UUID uuid = UUID.randomUUID();
-		String name = "Backhoe 3000";
-		String model = "BH30X2";
-		int cost = 95125;
+		String name = "Dump Truck";
+		String model = "DT730";
+		int cost = 120455;
 		LocalDate startDate = LocalDate.of(2024,  1, 1);
 		LocalDate endDate = LocalDate.of(2026, 6, 1);
 		
 		// Creates a Lease instance.
 		Lease lease = new Lease(uuid, 'L', name, model, cost, startDate, endDate);
 		
-		double expectedTotalCost = 70537.29;
+		double expectedTotalCost = 88920.63;
 		double actualTotalCost = lease.calculateTotalCost();
 		assertEquals(expectedTotalCost, actualTotalCost, TOLERANCE);
 		
@@ -80,22 +75,21 @@ public class EntityTests {
 	@Test
 	public void testRental() {
 		UUID uuid = UUID.randomUUID();
-		String name = "Backhoe 3000";
-		String model = "BH30X2";
-		int cost = 95125;
+		String name = "Dump Truck";
+		String model = "DT730";
+		int cost = 120455;
 		double hours = 25.0;
 		
-		// Create a Rental instance.
 		Rental rental = new Rental(uuid, 'R', name, model, cost, hours);
 		
-		double expectedTotalCost = 2482.29;
+		double expectedTotalCost = 3143.27;
         double actualTotalCost = rental.calculateTotalCost();
         assertEquals(expectedTotalCost, actualTotalCost, TOLERANCE);
         
         // Verify that the string representation includes key details.
         String s = rental.toString();
-        assertTrue(s.contains("Backhoe 3000"));
-        assertTrue(s.contains("BH30X2"));
+        assertTrue(s.contains("Dump Truck"));
+        assertTrue(s.contains("DT730"));
     }
 
 
@@ -107,7 +101,6 @@ public class EntityTests {
         double unitPrice = 9.99;
         int quantity = 31;
         
-        // Create a Material instance.
         Material material = new Material(uuid, 'M', name, packaging, unitPrice);
         material.setQuantity(quantity);
         
@@ -115,7 +108,6 @@ public class EntityTests {
         double actualTotalCost = material.calculateTotalCost();
         assertEquals(expectedTotalCost, actualTotalCost, TOLERANCE);
         
-        // Verify that the string representation contains key details.
         String s = material.toString();
         assertTrue(s.contains("Nails"));
         assertTrue(s.contains("Box"));
@@ -130,9 +122,8 @@ public class EntityTests {
         String subcontractorUUID = "0673a09a-5cc1-4269-88f2-e665c2f3f33c";
         double contractAmount = 10500.00;
         
-        // Create a Contract instance.
         Contract contract = new Contract(uuid, 'C', name, subcontractorUUID);
-        // Set the contract amount via a setter method.
+        // Sets the contract amount
         contract.setContractAmount(contractAmount);
         
         double expectedTotalCost = 10500.00;

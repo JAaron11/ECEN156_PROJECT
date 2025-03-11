@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+/**
+ * Represents a lease agreement for an item, with a defined start and end date.
+ */
 public class Lease extends Items{
 	
 	private LocalDate startDate;
@@ -19,16 +22,17 @@ public class Lease extends Items{
 		this.endDate = endDate;
 	}
 	
+	/**
+	 * Calculates the total lease cost including any applicable tax.
+	 * Lease cost is computed as an amortized fraction over 5 years with a multiplier of 1.5x.
+	 * If the computed lease cost exceeds $12,500, a flat tax of $1,500 is applied.
+	 */
 	public double calculateTotalCost() {
-        // Calculate inclusive days between start and end dates.
         long days = ChronoUnit.DAYS.between(startDate, endDate) + 1;
         double years = days / 365.0;
-        // Amortized fraction over 5 years.
         double amortizedFraction = years / 5.0;
         double cost = extraField2; // base equipment cost
-        // Lease cost calculation: fraction * baseCost * 1.5
         double leaseCost = amortizedFraction * cost * 1.5;
-        // If lease cost exceeds $12,500, add a flat tax of $1,500.
         double tax = (leaseCost > 12500) ? 1500.0 : 0.0;
         double total = leaseCost + tax;
         return Math.round(total * 100.0) / 100.0;

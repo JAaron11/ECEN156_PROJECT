@@ -19,12 +19,13 @@ public class Material extends Items {
     	return quantity;
     }
     
+    // Cost before tax
     public double getBaseCost() {
     	double unitPrice = getField2();
     	double baseCost = unitPrice * quantity;
     	return Math.round(baseCost * 100.0) / 100.0;
     }
-
+    // Total cost including taxes at rate of 7.15%.
     public double calculateTotalCost() {
         double unitPrice = getField2();
         double cost = unitPrice * quantity;

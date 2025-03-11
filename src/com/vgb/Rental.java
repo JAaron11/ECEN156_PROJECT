@@ -19,20 +19,24 @@ public class Rental extends Items {
         super(uuid, type, name, extraField1, extraField2);
         this.hours = hours;
     }
+
+    /**
+     *  Calculates the total rental cost including tax.
+     *  Rental cost is determined based on 0.1% of the base cost per hour.
+     *  A tax rate of 4.38% is applied to the rental cost.
+     */
     
     @Override
     public double calculateTotalCost() {
         double baseCost = extraField2; // equipment's base cost
-        // Calculate per-hour charge: 0.1% of base cost.
         double perHourCharge = baseCost * 0.001;
-        // Total rental cost based on hours.
         double rentalCost = perHourCharge * hours;
-        // Apply tax at 4.38%
         double tax = rentalCost * 0.0438;
         double total = rentalCost + tax;
         return Math.round(total * 100.0) / 100.0;
     }
     
+    // Rental cost before taxes
     public double getRentalBaseCost() {
     	double baseCost = extraField2; // base equipment cost stored as int in extraField2
     	double perHourCharge = baseCost * 0.001;
@@ -40,6 +44,7 @@ public class Rental extends Items {
     	return Math.round(rentalCost * 100.0) / 100.0;
     }
     
+    // Tax applied to the rental cost.
     public double getRentalTax() {
     	double baseCost = getRentalBaseCost();
     	double tax = baseCost * 0.0438;

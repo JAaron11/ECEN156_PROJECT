@@ -24,6 +24,14 @@ public class CSVParse {
 		}
 	}
 
+	/**
+	 * Parses a CSV file containing person data and converts it into a list of Persons objects.
+	 * Each row should contain at least a UUID, first name, and last name.
+	 * 
+	 * @param 	filePath Path to the CSV file
+	 * @return 	List of Persons objects
+	 * @throws 	IOException if file reading fails
+	 */
 	public static List<Persons> parsePersons(String filePath) throws IOException {
 		List<Persons> persons = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
@@ -59,6 +67,14 @@ public class CSVParse {
 		return persons;
 	}
 
+	/**
+	 * Parses a CSV file containing company data and converts in into a list of Companies objects.
+	 * Ensures that each company has a valid UUID and associated contact UUID.
+	 * 
+	 * @param 	filePath Path to the CSV file
+	 * @return	List of Companies objects
+	 * @throws 	IOException
+	 */
 	public static List<Companies> parseCompanies(String filePath) throws IOException {
 		List<Companies> companies = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
@@ -86,6 +102,14 @@ public class CSVParse {
 		return companies;
 	}
 
+	/**
+	 * Parses a CSV file containing item data and converts it into a list of Items objects.
+	 * Ensures that each item has a valid UUID and appropriate values.
+	 * 
+	 * @param 	filePath Path to the CSV file
+	 * @return 	List of Items objects
+	 * @throws 	IOException if file reading fails
+	 */
 	public static List<Items> parseItems(String filePath) throws IOException {
 		List<Items> items = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
