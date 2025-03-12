@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class Invoice {
 	private UUID invoiceId;
-	private Date invoiceDate;
-	private String Customer;
+	private Date date;
+	private String customer;
 	private List<Item> items;
 	
 	/**
@@ -16,7 +16,18 @@ public class Invoice {
 	 */
 	public Invoice() {
 		this.invoiceId = UUID.randomUUID();
+		this.date = new Date();
+		this.customer = "Unknown Customer"; // default value; setCustomer changes it.
 		this.items = new ArrayList<>();
+	}
+	
+	/**
+	 * Alternative constructor that accepts a customer name.
+	 * @param customer The customer (company name) associated with the invoice.
+	 */
+	public Invoice(String customer) {
+		this();
+		this.customer = customer;
 	}
 	
 	/**
@@ -26,61 +37,29 @@ public class Invoice {
 	public void addItems(Item items) {
 		this.items.add(items);
 	}
-	/**
-	 * Calculates the subtotal of all items in the invoice.
-	 * @return The subtotal rounded to two decimal places
-	 */
+	
 	public double getSubtotal() {
 		double subtotal = 0.0;
-        for (Item item : items) {
-            if (item instanceof Equipment) {
-                // Equipment: assume getCost() returns the base cost.
-                subtotal += ((Equipment)item).getPrice();
-            } else if (item instanceof Lease) {
-                // Lease: assume getLeaseBaseCost() returns the base lease cost before tax.
-                subtotal += ((Lease)item).getLeaseBaseCost();
-            } else if (item instanceof Rental) {
-                // Rental: assume getRentalBaseCost() returns the base rental cost before tax.
-                subtotal += ((Rental)item).getRentalBaseCost();
-            } else if (item instanceof Material) {
-                // Material: assume getBaseCost() returns (unit price * quantity).
-                subtotal += ((Material)item).getBaseCost();
-            } else if (item instanceof Contract) {
-                // Contract: assume getContractAmount() returns the contract amount.
-                subtotal += ((Contract)item).getContractAmount();
-            }
-        }
-        return Math.round(subtotal * 100.0) / 100.0;
-    }
+		for (Item item : items) {
+			subtotal += item.calculateSubTotal();
+		}
+		return Util.roundToTenths(subtotal);
+	}
 	
-	/**
-     * Returns the total tax for the invoice.
-     * @return The total tax amount rounded to two decimal places
-     */
-    public double getTaxTotal() {
-        double taxTotal = 0.0;
-        for (Item item : items) {
-        	taxTotal += item.getTax();
-            if (item instanceof Equipment) {
-                taxTotal += ((Equipment)item).calculateTax();
-            } else if (item instanceof Lease) {
-                taxTotal += ((Lease)item).getLeaseTax();
-            } else if (item instanceof Rental) {
-                taxTotal += ((Rental)item).getRentalTax();
-            } else if (item instanceof Material) {
-                taxTotal += ((Material)item).calculateTax();
-            }
-            // Contracts have no tax.
-        }
-        return Math.round(taxTotal * 100.0) / 100.0;
-    }
+	public double getTaxTotal() {
+		double taxTotal = 0.0;
+		for (Item item : items) {
+			taxTotal += item.calculateTax();
+		}
+		return Util.roundToTenths(taxTotal);
+	}
 	
     /**
      * Returns the grand total: subtotal + tax total.
      * @return The final total cost of the invoice rounded to two decimal places
      */
     public double getGrandTotal() {
-        return Math.round((getSubtotal() + getTaxTotal()) * 100.0) / 100.0;
+        return Util.roundToTenths((getSubtotal() + getTaxTotal()));
     }
 
     /**
@@ -90,6 +69,10 @@ public class Invoice {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        //Header details
+        sb.append("Invoice ID: ").append(invoiceId).append("\n");
+        sb.append("Customer: ").append(invoiceId).append("\n");
+        sb.append("Date: ").append(invoiceId).append("\n\n");
         for (Item item : items) {
             sb.append(item.toString()).append("\n");
         }
@@ -105,8 +88,16 @@ public class Invoice {
 	
 	public void printInvoice() {
 		System.out.println("Invoice ID: " + invoiceId);
-		items.forEach(items -> System.out.println(items.getName() + ": $" + items.calculateTotalCost()));
+		System.out.println("Customer: " + customer);
+		System.out.println("Date: " + date);
+		System.out.println("Items: ");
+		for (Item item : items) {
+			System.out.println(item.getName() + ": $" + item.calculateTotalCost());
+		}
 		System.out.println("Total: $" + calculateTotalInvoiceCost());
 	}
-
+	
+	public void setCustomer(String customer) {
+		this.customer = customer;
+	}
 }

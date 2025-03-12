@@ -6,7 +6,7 @@ import java.util.UUID;
 
 // Creates a Persons class with a means of calling it.
 
-public class Persons {
+public class Person {
 
 	private UUID uuid;
 	private String firstName;
@@ -14,7 +14,7 @@ public class Persons {
 	private String phoneNumber;
 	private List<String> emails;
 
-	public Persons(UUID uuid, String firstName, String lastName, String phoneNumber, List<String> emails) {
+	public Person(UUID uuid, String firstName, String lastName, String phoneNumber, List<String> emails) {
 		this.uuid = uuid;
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -1,122 +1,77 @@
 [
   {
+    "equipmentPrice": 0.0,
     "uuid": "f8b87cbc-cd4e-441f-a4db-62a2d963d399",
-    "type": "E",
-    "name": "Scraper",
-    "extraField1": "SC6754",
-    "extraField2": 9576.0,
-    "price": 0.0
+    "name": "Scraper"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "afc4727a-1a46-4aa2-a68e-00024e73ab1c",
-    "type": "E",
-    "name": "Compactor",
-    "extraField1": "CAT89",
-    "extraField2": 1342.0,
-    "price": 0.0
+    "name": "Compactor"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "fbbdbb1a-de8e-40aa-bd1d-84f2b28d83d0",
-    "type": "E",
-    "name": "Dragline",
-    "extraField1": "DB12",
-    "extraField2": 67089.0,
-    "price": 0.0
+    "name": "Dragline"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "17807169-4f0a-4602-82e1-e561c96c762b",
-    "type": "E",
-    "name": "Scraper",
-    "extraField1": "SCX3456",
-    "extraField2": 20134.0,
-    "price": 0.0
+    "name": "Scraper"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "d675bc7a-5460-401f-9fd9-86379f438d9f",
-    "type": "E",
-    "name": "Dump Truck",
-    "extraField1": "DT730",
-    "extraField2": 120455.0,
-    "price": 0.0
+    "name": "Dump Truck"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "50d5027a-1efd-4257-85e5-7b07edd89007",
-    "type": "E",
-    "name": "Plastic",
-    "extraField1": "sheet",
-    "extraField2": 10.0,
-    "price": 0.0
+    "name": "Plastic"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "2bd90c2e-23b6-4238-a28c-e049ed153c63",
-    "type": "E",
-    "name": "Plexiglass",
-    "extraField1": "crate",
-    "extraField2": 1349.0,
-    "price": 0.0
+    "name": "Plexiglass"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "6119fe42-2dc1-43d9-a8ad-9bb144b79c74",
-    "type": "E",
-    "name": "Wood",
-    "extraField1": "pallet",
-    "extraField2": 30.0,
-    "price": 0.0
+    "name": "Wood"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "a99cf41d-0e03-4f94-aa18-c3383d71cb79",
-    "type": "E",
-    "name": "Aluminum",
-    "extraField1": "roll",
-    "extraField2": 120.0,
-    "price": 0.0
+    "name": "Aluminum"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "bebcb031-4b80-4e81-acd3-f03452044627",
-    "type": "E",
-    "name": "Stone",
-    "extraField1": "gravel",
-    "extraField2": 43.0,
-    "price": 0.0
+    "name": "Stone"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "aabea3e4-5367-4fd2-a65a-9d2d2a3fbc4b",
-    "type": "E",
-    "name": "Curb \u0026 Gutter",
-    "extraField1": "1c04b600-0fff-4b19-af21-8f82086f9958",
-    "extraField2": 0.0,
-    "price": 0.0
+    "name": "Curb \u0026 Gutter"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "0d808658-c672-405a-b169-f5906b2b8bb1",
-    "type": "E",
-    "name": "Wall Protection",
-    "extraField1": "1c04b600-0fff-4b19-af21-8f82086f9958",
-    "extraField2": 0.0,
-    "price": 0.0
+    "name": "Wall Protection"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "6336f3cd-5ced-4c32-8ca3-88a26544f4fc",
-    "type": "E",
-    "name": "Epoxy Flooring",
-    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b",
-    "extraField2": 0.0,
-    "price": 0.0
+    "name": "Epoxy Flooring"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "40a02aa5-22fd-4c7b-9300-15a3688a173f",
-    "type": "E",
-    "name": "Elevator",
-    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b",
-    "extraField2": 0.0,
-    "price": 0.0
+    "name": "Elevator"
   },
   {
+    "equipmentPrice": 0.0,
     "uuid": "c39e995e-931d-480f-b9f2-bfe1723d7e69",
-    "type": "E",
-    "name": "Retaining Wall and Brick Pavers",
-    "extraField1": "48185aae-4cdf-4eea-84cf-efff49610f7b",
-    "extraField2": 0.0,
-    "price": 0.0
+    "name": "Retaining Wall and Brick Pavers"
   }
 ]

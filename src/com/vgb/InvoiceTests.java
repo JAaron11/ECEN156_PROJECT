@@ -39,9 +39,9 @@ public class InvoiceTests {
 		
 		// Calculates and compares the values to the expected values
 
-		double expectedSubtotal = 120455.00 + 87420.63 + 3011.38; 	// = 210948.72
-		double expectedTaxTotal = 6323.74 + 1500.00 + 132.05;		// = 7955.42
-		double expectedGrandTotal = expectedSubtotal + expectedTaxTotal; // = 218904.14
+		double expectedSubtotal = 120455.00 + 87420.63 + 3011.38; 	// = 210887.01
+		double expectedTaxTotal = 6323.74 + 1500.00 + 132.05;		// = 7955.79
+		double expectedGrandTotal = expectedSubtotal + expectedTaxTotal; // = 218842.80
 
 		double actualSubtotal = invoice.getSubtotal();
         double actualTaxTotal = invoice.getTaxTotal();
@@ -66,8 +66,7 @@ public class InvoiceTests {
 		Material material = new Material(UUID.randomUUID(), 'M', "Nails", "Box", 9.99);
 		material.setQuantity(31);
 		
-		Contract contract = new Contract(UUID.randomUUID(), 'C', "foundation pour", "0673a09a-5cc1-4269-88f2-e665c2f3f33c");
-		contract.setContractAmount(10500.00);
+		Contract contract = new Contract(UUID.randomUUID(), 'C', "foundation pour", "0673a09a-5cc1-4269-88f2-e665c2f3f33c", 10500.00);
 		
 		Invoice invoice = new Invoice();
 		invoice.addItems(material);

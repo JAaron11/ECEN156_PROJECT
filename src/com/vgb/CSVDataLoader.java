@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class CSVParse {
+public class CSVDataLoader {
 
 	// Helper method to safely parse UUIDs (avoid crashes due to invalid UUIDs).
 	private static UUID safeParseUUID(String uuidStr) {
@@ -32,8 +32,8 @@ public class CSVParse {
 	 * @return 	List of Persons objects
 	 * @throws 	IOException if file reading fails
 	 */
-	public static List<Persons> parsePersons(String filePath) throws IOException {
-		List<Persons> persons = new ArrayList<>();
+	public static List<Person> parsePersons(String filePath) throws IOException {
+		List<Person> persons = new ArrayList<>();
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
 
 		// Checks if a given row is empty and skips if so.
@@ -62,7 +62,7 @@ public class CSVParse {
 			List<String> emails = tokens.length > 4 && !tokens[4].isEmpty() ? Arrays.asList(tokens[4].split(","))
 					: new ArrayList<>();
 
-			persons.add(new Persons(uuid, firstName, lastName, phoneNumber, emails));
+			persons.add(new Person(uuid, firstName, lastName, phoneNumber, emails));
 		}
 		return persons;
 	}

@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class Equipment extends Item {
 	
-	protected String extraField1;
-	protected double extraField2;
+	protected String model;
+	protected double equipmentPrice;
 
 	/**
 	 * Constructs an Equipment instance.
@@ -15,26 +15,27 @@ public class Equipment extends Item {
 	 * @param extraField1 Model name of the equipment
 	 * @param extraField2 Cost of the equipment
 	 */
-    public Equipment(UUID uuid, char type, String name, String extraField1, int extraField2) {
-        super(uuid, 'E', name, extraField1, extraField2);
+    public Equipment(UUID uuid, char type, String name, String model, double equipmentPrice) {
+        super(uuid, 'E', name);
+        this.model = model;
+        this.equipmentPrice = equipmentPrice;
     }
     
-    public double getPrice() {
-    	return extraField2;
+    public double calculateSubTotal() {
+    	return Util.roundToTenths(equipmentPrice);
     }
 
     public double calculateTax() {
-        return Math.round((extraField2 * 0.0525) * 100.0) / 100.0; // Tax rate is fixed at 5.25%.
+    	double tax = equipmentPrice * 0.0525;
+        return Util.roundToTenths(tax); // Tax rate is fixed at 5.25%.
     }
     
     public double calculateTotalCost() {
-    	double cost = extraField2;
-    	double tax = cost * 0.0525;
-    	return Math.round((cost + tax) * 100.0) / 100.0;
+    	return Util.roundToTenths(calculateTax() + equipmentPrice);
     }
     
     public String toString() {
-    	return "Equipment{name='" + name + "', model='" + extraField1 + "', cost=" + String.format("%.2f", (double) extraField2) + "}";
+    	return "Equipment{name='" + name + "', model='" + model + "', cost=" + String.format("%.2f", (double) equipmentPrice) + "}";
     }
 }
 

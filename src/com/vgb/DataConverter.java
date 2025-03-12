@@ -13,15 +13,15 @@ import java.util.List;
 public class DataConverter {
 
 	// Default and alternate data folders
-	private static final String DEFAULT_DATA_FOLDER = "data"; // Default data folder
-	private static final String EXTRA_DATA_FOLDER = "extraData";// Extra data folder
-	private static String activeFolder = DEFAULT_DATA_FOLDER; // Active data folder
+	private static final String DEFAULT_DATA_FOLDER = "data"; 
+	private static final String EXTRA_DATA_FOLDER = "extraData";
+	private static String activeFolder = DEFAULT_DATA_FOLDER;
 
 	public static void main(String[] args) throws IOException {
 
-		List<Persons> persons = CSVParse.parsePersons(activeFolder + "/Persons.csv");
-		List<Companies> companies = CSVParse.parseCompanies(activeFolder + "/Companies.csv");
-		List<Item> items = CSVParse.parseItems(activeFolder + "/Items.csv");
+		List<Person> persons = CSVDataLoader.parsePersons(activeFolder + "/Persons.csv");
+		List<Companies> companies = CSVDataLoader.parseCompanies(activeFolder + "/Companies.csv");
+		List<Item> items = CSVDataLoader.parseItems(activeFolder + "/Items.csv");
 
 		// Serialize to JSON
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -37,7 +37,7 @@ public class DataConverter {
 
 		// Serialize to XML
 		XStream xstream = new XStream(new DomDriver());
-		xstream.alias("person", Persons.class);
+		xstream.alias("person", Person.class);
 		xstream.alias("company", Companies.class);
 		xstream.alias("item", Item.class);
 

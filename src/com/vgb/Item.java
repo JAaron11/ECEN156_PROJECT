@@ -7,16 +7,16 @@ import java.util.UUID;
  */
 
 public abstract class Item {
+
 	protected UUID uuid;
 	protected String name;
-	protected double price;
-	protected double tax;
+	
 
-	public Item(UUID uuid, char type, String name, String extraField1, double extraField2) {
+	public Item(UUID uuid, char type, String name) {
 		this.uuid = uuid;
 		this.name = name;
 	}
-	
+
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -25,16 +25,18 @@ public abstract class Item {
 		return name;
 	}
 
-	public abstract double getPrice();
-	
-	public abstract double getTax();
-	
-	public abstract double calculateTotalCost(); //Force subclasses to implement cost calculation
+	/**
+	 * Forces all subclasses of item to implement each type of calculation and
+	 * toString methods.
+	 * 
+	 * @return
+	 */
 
-	// Output to string
-	public String toString() {
-		return "Item{uuid=" + uuid + ", type=" + type + ", name=" + name + "', extraField1=" + extraField1
-				+ ", extraField2=" + extraField2 + "'}";
+	public abstract double calculateSubTotal();
 
-	}
+	public abstract double calculateTax();
+
+	public abstract double calculateTotalCost();
+
+	public abstract String toString();
 }

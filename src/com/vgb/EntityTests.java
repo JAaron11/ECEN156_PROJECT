@@ -2,11 +2,7 @@ package com.vgb;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
-
-import com.vgb.Lease;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -36,7 +32,7 @@ public class EntityTests {
 		double expectedCost = cost;
 		double expectedTax = Math.round(cost * 0.0525 * 100.0) / 100.0;
 
-		double actualCost = equip.getPrice(); 
+		double actualCost = equip.calculateSubTotal(); 
 		double actualTax = equip.calculateTax();
 
 		//Utilizes assertEquals with the TOLERANCE to compare
@@ -122,9 +118,7 @@ public class EntityTests {
         String subcontractorUUID = "0673a09a-5cc1-4269-88f2-e665c2f3f33c";
         double contractAmount = 10500.00;
         
-        Contract contract = new Contract(uuid, 'C', name, subcontractorUUID);
-        // Sets the contract amount
-        contract.setContractAmount(contractAmount);
+        Contract contract = new Contract(uuid, 'C', name, subcontractorUUID, contractAmount);
         
         double expectedTotalCost = 10500.00;
         double actualTotalCost = contract.calculateTotalCost();

@@ -2,7 +2,9 @@ package com.vgb;
 
 import java.util.UUID;
 
-// Creates a Companies class and a method of calling it.
+/**
+ *  Creates a Companies class and a method of calling it.
+ */
 
 public class Companies {
 

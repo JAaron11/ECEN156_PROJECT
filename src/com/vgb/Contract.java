@@ -4,16 +4,15 @@ import java.util.UUID;
 
 public class Contract extends Item {
 
-	private double contractAmount = 0.0;
+	private double contractAmount;
+	private String companyUUID;
 	
-	public Contract(UUID uuid, char type, String name, String extraField1) {
+	public Contract(UUID uuid, char type, String name, String companyUUID, double contractAmount) {
 		// since contracts do not utilize extraField2 for the cost, passed as zero.
-		super(uuid, 'C', name, extraField1, 0);
+		super(uuid, 'C', name);
+		this.contractAmount = contractAmount;
+		this.companyUUID = companyUUID;
 		}
-	
-	public double getContractAmount() {
-		return contractAmount;
-	}
 	
 	public double calculateTotalCost() {
 		// Simply returns the contractAmount (no taxes)
@@ -21,14 +20,17 @@ public class Contract extends Item {
 	}
 
 	@Override
-	public double getPrice() {
-		// TODO Auto-generated method stub
+	public double calculateSubTotal() {
+		return Util.roundToTenths(contractAmount + calculateTax());
+	}
+
+	@Override
+	public double calculateTax() {
 		return 0;
 	}
 
 	@Override
-	public double getTax() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String toString() {
+		return "Contract{Service='" + name + "', company='" + companyUUID + "', cost=" + String.format("%.2f", (double) contractAmount) + "}";
 	}
 }

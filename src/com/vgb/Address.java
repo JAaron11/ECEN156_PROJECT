@@ -1,6 +1,8 @@
 package com.vgb;
 
-// Creates a class for Address and a means to call it.
+/**
+ * Creates a class for Address and a means to call it.
+ */
 
 public class Address {
 
