@@ -18,7 +18,7 @@ public class Rental extends Item {
 	 * @param rentalCost  The base cost (price) of the equipment.
 	 * @param hours       The number of rental hours.
 	 */
-	public Rental(UUID uuid, char type, String name, String model, int rentalCost, double hours) {
+	public Rental(UUID uuid, char type, String name, String model, double rentalCost, double hours) {
 		super(uuid, type, name);
 		this.model = model;
 		this.rentalCost = rentalCost;
