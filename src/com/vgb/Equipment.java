@@ -16,7 +16,7 @@ public class Equipment extends Item {
 	 * @param extraField2 Cost of the equipment
 	 */
     public Equipment(UUID uuid, char type, String name, String model, double equipmentPrice) {
-        super(uuid, 'E', name, model);
+        super(uuid, 'E', name);
         this.model = model;
         this.equipmentPrice = equipmentPrice;
     }
@@ -35,7 +35,7 @@ public class Equipment extends Item {
     }
     
     public String toString() {
-    	return uuid + " (Purchase) " + "\t" + name + "-" + model;
+    	return uuid + " (Purchase) " + "\t" + name + "-" + model + String.format("%.2f", equipmentPrice);
     }
 }
 

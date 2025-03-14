@@ -2,20 +2,20 @@
 |                             SummaryReport - By Total                                   |
 +----------------------------------------------------------------------------------------+
 Invoice #    Customer                       Num Items       Tax        Total     
-8a9bff38-24af-4a0c-b425-bf3a6fa64746 Weissnat and Okuneva           3               $      0.04 $  10501.04
+8a9bff38-24af-4a0c-b425-bf3a6fa64746 Weissnat and Okuneva           3               $     71.54 $  11572.54
 4f6adb47-2fdd-43b5-8ad0-c10bb4116e52 Abernathy-Schamberger          1               $     52.50 $   1052.50
-c89f1367-ce43-459e-8988-7e4d8cce83ce Weissnat and Okuneva           1               $      0.00 $      0.00
+c89f1367-ce43-459e-8988-7e4d8cce83ce Weissnat and Okuneva           1               $     14.30 $    214.30
 +----------------------------------------------------------------------------------------+
-                                              5               $     52.54
+                                              5               $    138.34
 
 +----------------------------------------------------------------+
 |                 Company Invoice Summary Report                 |
 +----------------------------------------------------------------+
 Company                        # Invoices   Grand Total
 Abernathy-Schamberger          1            $   1052.50
-Weissnat and Okuneva           2            $  10501.04
+Weissnat and Okuneva           2            $  11786.84
 +----------------------------------------------------------------+
-                               3            $  11553.54
+                               3            $  12839.34
 Invoice# 8a9bff38-24af-4a0c-b425-bf3a6fa64746
 Date     2025-01-13
 Customer:
@@ -31,17 +31,17 @@ Ubee, Karia (65678ae9-43e6-48bf-b80f-6b6ec5189c66)
 Items (3)                                                            Tax       Total
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
 ac47e0f6-5d5b-49fe-af54-a6625a6374a8 (Material) concrete
-	0 @ $100.00/bag
-                                                              $      0.04 $  10501.00
-38bebacb-a3ca-459e-a71f-8e5826a2f7fa (Contract) foundation pour
+	100.0 @ $10.0/null
+                                                              $     71.54 $  11501.00
+null (Contract) foundation pour
 	@ $10500.00
-                                                              $      0.04 $  10501.00
-e9afb98d-ac99-4974-a274-2dca5c1238f5 (Rental) Skid-Steer-S4325
+                                                              $     71.54 $  11501.00
+e9afb98d-ac99-4974-a274-2dca5c1238f5 (Rental) Skid-Steer-null
 	20.0 hours
-                                                              $      0.04 $  10501.00
+                                                              $     71.54 $  11501.00
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-                                                   Subtotals $      0.04 $  10501.00
-                                                 Grand Total             $  10501.04
+                                                   Subtotals $     71.54 $  11501.00
+                                                 Grand Total             $  11572.54
 
 Invoice# 4f6adb47-2fdd-43b5-8ad0-c10bb4116e52
 Date     2025-01-16
@@ -57,7 +57,7 @@ Ellam, Julietta (7f90331d-8d51-43d7-8fab-9d5baf6019bf)
 	[jellam3@dropbox.com]
 Items (1)                                                            Tax       Total
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-4c0c851d-0466-42c8-8631-0b414db5be98 (Purchase) 	Bulldozer-XPXY4
+4c0c851d-0466-42c8-8631-0b414db5be98 (Purchase) 	Bulldozer-null1000.00
                                                               $     52.50 $   1000.00
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
                                                    Subtotals $     52.50 $   1000.00
@@ -78,9 +78,9 @@ Gosdin, Louisette (6056d47e-dd04-46ee-b711-ba49d9d3d38a)
 Items (1)                                                            Tax       Total
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
 72e157ac-5b46-4b3b-b86b-599a89be7289 (Material) sand
-	0 @ $20.00/ton
-                                                              $      0.00 $      0.00
+	20.0 @ $10.0/null
+                                                              $     14.30 $    200.00
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-                                                   Subtotals $      0.00 $      0.00
-                                                 Grand Total             $      0.00
+                                                   Subtotals $     14.30 $    200.00
+                                                 Grand Total             $    214.30
 

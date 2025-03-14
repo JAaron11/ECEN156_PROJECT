@@ -254,8 +254,20 @@ public class CSVDataLoader {
 						item = new Contract(itemUUID, 'C', actualName, actualModel, value);
 					} else {
 						// Otherwise, treat as Material with quantity.
+						double quantity = (Double.parseDouble(indicator));
+						
+						//Default values in case the base item is not available.
+						String unit = "each";
 						double unitCost = 10.0; // default unit cost for materials
-						item = new Material(itemUUID, 'M', actualName, actualModel, value);
+						
+						// If a base item exists and it's a Material, use its unit cost (and unit).
+						if (baseItem != null && baseItem instanceof Material) {
+					        Material mat = (Material) baseItem;
+					        unit = mat.getUnit();
+					        unitCost = mat.getUnitCost();
+					    }
+						
+						item = new Material(itemUUID, 'M', actualName, actualModel, quantity, unitCost);
 					}
 				}
 

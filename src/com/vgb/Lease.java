@@ -19,7 +19,7 @@ public class Lease extends Item{
 	 */
 	public Lease(UUID uuid, char type, String name, String model, double leasePrice,
 			LocalDate startDate, LocalDate endDate) {
-		super(uuid, type, name, model);
+		super(uuid, type, name);
 		this.model = model;
 		this.leasePrice = leasePrice;
 		this.startDate = startDate;

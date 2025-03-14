@@ -63,7 +63,7 @@ public class InvoiceTests {
 	@Test
 	public void testInvoice02() {
 
-		Material material = new Material(UUID.randomUUID(), 'M', "Nails", "Box", 9.99);
+		Material material = new Material(UUID.randomUUID(), 'M', "Nails", "Box", 9.99, 0);
 		material.setQuantity(31);
 		
 		Contract contract = new Contract(UUID.randomUUID(), 'C', "foundation pour", "0673a09a-5cc1-4269-88f2-e665c2f3f33c", 10500.00);

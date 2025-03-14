@@ -97,8 +97,7 @@ public class EntityTests {
         double unitPrice = 9.99;
         int quantity = 31;
         
-        Material material = new Material(uuid, 'M', name, packaging, unitPrice);
-        material.setQuantity(quantity);
+        Material material = new Material(uuid, 'M', name, packaging, quantity, unitPrice);
         
         double expectedTotalCost = 331.83;
         double actualTotalCost = material.calculateTotalCost();

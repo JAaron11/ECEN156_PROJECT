@@ -4,23 +4,22 @@ import java.util.UUID;
 
 public class Material extends Item {
 	
-	protected String material;
+	protected String unit;
 	protected double unitCost;
-	
-	private int quantity;
+	private double quantity;
 
-    public Material(UUID uuid, char type, String name, String material, double unitCost) {
-        super(uuid, 'M', name, null);
-        this.quantity = 0; // default value until set explicitly
-        this.material = material;
+    public Material(UUID uuid, char type, String name, String unit, double quantity, double unitCost) {
+        super(uuid, 'M', name);
+        this.quantity = quantity; // default value until set explicitly
+        this.unit = unit;
         this.unitCost = unitCost;
     }
     
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
     	this.quantity = quantity;
     }
     
-    public int getQuantity() {
+    public double getQuantity() {
     	return quantity;
     }
     
@@ -42,6 +41,14 @@ public class Material extends Item {
 
 	@Override
 	public String toString() {
-		return uuid + " (Material) " + name + "\n\t" + quantity + " @ " + "$" + String.format("%.2f", (double) unitCost) + "/" + material;
+		return uuid + " (Material) " + name + "\n\t" + quantity + " @ " + "$" + unitCost + "/" + unit;
+	}
+
+	public double getUnitCost() {
+		return unitCost;
+	}
+	
+	public String getUnit() {
+		return unit;
 	}
 }

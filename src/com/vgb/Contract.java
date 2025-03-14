@@ -31,6 +31,6 @@ public class Contract extends Item {
 
 	@Override
 	public String toString() {
-		return uuid + " (Contract) " + name + "\n\t@ $" + String.format("%.2f", (double) contractAmount);
+		return companyUUID + " (Contract) " + name + "\n\t@ $" + String.format("%.2f", (double) contractAmount);
 	}
 }
