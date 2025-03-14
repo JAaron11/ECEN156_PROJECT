@@ -10,7 +10,7 @@ public class Material extends Item {
 	private int quantity;
 
     public Material(UUID uuid, char type, String name, String material, double unitCost) {
-        super(uuid, 'M', name);
+        super(uuid, 'M', name, null);
         this.quantity = 0; // default value until set explicitly
         this.material = material;
         this.unitCost = unitCost;
@@ -42,6 +42,6 @@ public class Material extends Item {
 
 	@Override
 	public String toString() {
-		return "Material{name='" + name + "', material='" + material + "', cost=" + String.format("%.2f", (double) unitCost) + "}";
+		return uuid + " (Material) " + name + "\n\t" + quantity + " @ " + "$" + String.format("%.2f", (double) unitCost) + "/" + material;
 	}
 }

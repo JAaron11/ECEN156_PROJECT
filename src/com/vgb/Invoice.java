@@ -165,4 +165,20 @@ public class Invoice {
 	public UUID getInvoiceId() {
 		return this.invoiceId;
 	}
+	
+	public String getCustomer() {
+		return this.customer;
+	}
+	
+	public Date getDate() {
+		return this.date;
+	}
+	
+	public List<Item> getItems() {
+		return this.items;
+	}
+
+	public String getSalesPerson() {
+		return this.salesPerson;
+	}
 }

@@ -19,7 +19,7 @@ public class Rental extends Item {
 	 * @param hours       The number of rental hours.
 	 */
 	public Rental(UUID uuid, char type, String name, String model, double rentalCost, double hours) {
-		super(uuid, type, name);
+		super(uuid, type, name, model);
 		this.model = model;
 		this.rentalCost = rentalCost;
 		this.hours = hours;
@@ -58,6 +58,6 @@ public class Rental extends Item {
 
 	@Override
 	public String toString() {
-		return "Rental{name='" + name + "', model='" + model + "', baseCost=" + rentalCost + ", hours=" + hours + "}";
+		return uuid + " (Rental) " + name + "-" + model + "\n\t" + hours + " hours";
 	}
 }

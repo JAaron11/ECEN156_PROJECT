@@ -10,11 +10,13 @@ public abstract class Item {
 
 	protected UUID uuid;
 	protected String name;
+	protected String model;
 	
 
 	public Item(UUID uuid, char type, String name) {
 		this.uuid = uuid;
 		this.name = name;
+		this.model = model;
 	}
 
 	public UUID getUuid() {
@@ -23,6 +25,10 @@ public abstract class Item {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getModel() {
+		return model;
 	}
 
 	/**

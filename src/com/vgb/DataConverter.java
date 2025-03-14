@@ -15,7 +15,7 @@ public class DataConverter {
 	// Default and alternate data folders
 	private static final String DEFAULT_DATA_FOLDER = "data"; 
 	private static final String EXTRA_DATA_FOLDER = "extraData";
-	private static String activeFolder = DEFAULT_DATA_FOLDER;
+	private static String activeFolder = EXTRA_DATA_FOLDER;
 
 	public static void main(String[] args) throws IOException {
 

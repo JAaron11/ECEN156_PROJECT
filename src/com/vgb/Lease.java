@@ -19,7 +19,7 @@ public class Lease extends Item{
 	 */
 	public Lease(UUID uuid, char type, String name, String model, double leasePrice,
 			LocalDate startDate, LocalDate endDate) {
-		super(uuid, type, name);
+		super(uuid, type, name, model);
 		this.model = model;
 		this.leasePrice = leasePrice;
 		this.startDate = startDate;
@@ -57,6 +57,6 @@ public class Lease extends Item{
     
     @Override
     public String toString() {
-        return ", Lease Period: " + startDate + " to " + endDate;
+        return uuid + " (Lease) " + name + "-" + model + "\n\t" + (ChronoUnit.DAYS.between(startDate, endDate) + 1) + " days (" + startDate + " -> " + endDate + ")";
     }
 }

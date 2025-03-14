@@ -1,102 +1,92 @@
 [
   {
+    "model": "DX200b",
+    "equipmentPrice": 347125.0,
     "uuid": "2dd5220e-6779-4fe7-81d2-b79dcbff3415",
-    "type": "E",
-    "name": "Dragline",
-    "extraField1": "DX200b",
-    "extraField2": "347125"
+    "name": "Dragline"
   },
   {
+    "model": "XPXY4",
+    "equipmentPrice": 125500.0,
     "uuid": "4c0c851d-0466-42c8-8631-0b414db5be98",
-    "type": "E",
-    "name": "Bulldozer",
-    "extraField1": "XPXY4",
-    "extraField2": "125500"
+    "name": "Bulldozer"
   },
   {
+    "model": "FLT100",
+    "equipmentPrice": 4500.0,
     "uuid": "984bac8d-96f7-4d6b-9948-1cabae15ba51",
-    "type": "E",
-    "name": "Compactor",
-    "extraField1": "FLT100",
-    "extraField2": "4500"
+    "name": "Compactor"
   },
   {
+    "model": "DUMPRX5000",
+    "equipmentPrice": 90450.0,
     "uuid": "50e6f93f-3792-459f-b1c6-b512b994ff2b",
-    "type": "E",
-    "name": "Dump Truck",
-    "extraField1": "DUMPRX5000",
-    "extraField2": "90450"
+    "name": "Dump Truck"
   },
   {
+    "model": "S4325",
+    "equipmentPrice": 8500.0,
     "uuid": "e9afb98d-ac99-4974-a274-2dca5c1238f5",
-    "type": "E",
-    "name": "Skid-Steer",
-    "extraField1": "S4325",
-    "extraField2": "8500"
+    "name": "Skid-Steer"
   },
   {
+    "model": "bag",
+    "equipmentPrice": 40.0,
     "uuid": "ac47e0f6-5d5b-49fe-af54-a6625a6374a8",
-    "type": "M",
-    "name": "concrete",
-    "extraField1": "bag",
-    "extraField2": "40"
+    "name": "concrete"
   },
   {
+    "model": "ton",
+    "equipmentPrice": 1500.0,
     "uuid": "72e157ac-5b46-4b3b-b86b-599a89be7289",
-    "type": "M",
-    "name": "sand",
-    "extraField1": "ton",
-    "extraField2": "1500"
+    "name": "sand"
   },
   {
+    "model": "box",
+    "equipmentPrice": 15.0,
     "uuid": "97dc9f91-c009-4e8d-b08c-3d4d0ded0bad",
-    "type": "M",
-    "name": "nails",
-    "extraField1": "box",
-    "extraField2": "15"
+    "name": "nails"
   },
   {
+    "model": "lft",
+    "equipmentPrice": 8.0,
     "uuid": "30bebf58-ba44-4bef-885f-8fccb7db9544",
-    "type": "M",
-    "name": "lumber",
-    "extraField1": "lft",
-    "extraField2": "8"
+    "name": "lumber"
   },
   {
+    "model": "sheet",
+    "equipmentPrice": 35.0,
     "uuid": "8c8bbffa-a939-44f4-98b7-66837e7d16e9",
-    "type": "M",
-    "name": "drywall",
-    "extraField1": "sheet",
-    "extraField2": "35"
+    "name": "drywall"
   },
   {
+    "model": "0673a09a-5cc1-4269-88f2-e665c2f3f33c",
+    "equipmentPrice": 0.0,
     "uuid": "38bebacb-a3ca-459e-a71f-8e5826a2f7fa",
-    "type": "C",
-    "name": "foundation pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "name": "foundation pour"
   },
   {
+    "model": "0673a09a-5cc1-4269-88f2-e665c2f3f33c",
+    "equipmentPrice": 0.0,
     "uuid": "699607c3-d9db-4aef-a8ab-b3a6cab21e12",
-    "type": "C",
-    "name": "footing pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "name": "footing pour"
   },
   {
+    "model": "0673a09a-5cc1-4269-88f2-e665c2f3f33c",
+    "equipmentPrice": 0.0,
     "uuid": "ce9fc7f6-8be8-48cb-9236-7873dbf9b2b7",
-    "type": "C",
-    "name": "concrete pad pour",
-    "extraField1": "0673a09a-5cc1-4269-88f2-e665c2f3f33c"
+    "name": "concrete pad pour"
   },
   {
+    "model": "a8bae950-96ac-43a9-9a29-729db552e981",
+    "equipmentPrice": 0.0,
     "uuid": "97ee84b8-dc93-4db2-84bd-48e72a7f3131",
-    "type": "C",
-    "name": "electric install",
-    "extraField1": "a8bae950-96ac-43a9-9a29-729db552e981"
+    "name": "electric install"
   },
   {
+    "model": "a8bae950-96ac-43a9-9a29-729db552e981",
+    "equipmentPrice": 0.0,
     "uuid": "b118fa82-14cf-46f4-8574-41e583badc27",
-    "type": "C",
-    "name": "generator install",
-    "extraField1": "a8bae950-96ac-43a9-9a29-729db552e981"
+    "name": "generator install"
   }
 ]
