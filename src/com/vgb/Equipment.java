@@ -35,7 +35,7 @@ public class Equipment extends Item {
     }
     
     public String toString() {
-    	return uuid + " (Purchase) " + "\t" + name + "-" + model + String.format("%.2f", equipmentPrice);
+    	return uuid + " (Purchase) " + "\t" + name + "-" + model + String.format(" \n\t$%.2f", equipmentPrice);
     }
 
 	public double getEquipmentPrice() {
@@ -48,5 +48,9 @@ public class Equipment extends Item {
 	
 	public double getTaxTotal() {
 		return calculateTax();
+	}
+	
+	public String getModel() {
+		return model;
 	}
 }

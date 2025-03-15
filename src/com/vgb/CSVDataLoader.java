@@ -238,10 +238,9 @@ public class CSVDataLoader {
 				    } else if (baseItem != null && baseItem instanceof Equipment) {
 				        // Fall back to the cost provided by the Equipment from the Items CSV.
 				        Equipment eq = (Equipment) baseItem;
-				        cost = eq.getEquipmentPrice(); // Assuming Equipment has a getter for its cost.
+				        cost = eq.getEquipmentPrice();
 				    } else {
-				        // If no cost is provided and no base item exists, use a default.
-				        cost = 1000.0;
+				        cost = 1000.00; // Default cost
 				    }
 				    item = new Equipment(itemUUID, 'E', actualName, actualModel, cost);
 				} else if (indicator.equals("L")) {
@@ -251,12 +250,12 @@ public class CSVDataLoader {
 				        // If the CSV doesn't have a 6th token for daily cost, we won't parse it here.
 				        
 				        // 1) Retrieve the base cost from the base item.
-				        double leaseCost = 0.0;
+				        double leaseCost = 0.00;
 				        if (baseItem != null && baseItem instanceof Equipment) {
 				            leaseCost = ((Equipment) baseItem).getEquipmentPrice();
 				        } else {
 				            // fallback default if not found
-				            leaseCost = 850.0; 
+				            leaseCost = 850.00; 
 				        }
 				        
 				        LocalDate startDate = LocalDate.parse(startDateStr);
@@ -266,7 +265,6 @@ public class CSVDataLoader {
 				        item = new Lease(itemUUID, 'L', actualName, actualModel, leaseCost, startDate, endDate);
 				    }
 				} else if (indicator.equals("R")) {
-				    // 1) Parse hours from token[3], or default if not provided.
 				    double hours;
 				    if (tokens.length > 3 && !tokens[3].trim().isEmpty()) {
 				        hours = Double.parseDouble(tokens[3].trim());
@@ -285,24 +283,25 @@ public class CSVDataLoader {
 				} else {
 					// No indicator letter; assume a numeric value.
 					double value = Double.parseDouble(indicator);
-					if (value >= 5000) {
+					if (value >= 1000) {
 						// Treat as a Contract with the provided total amount.
 						item = new Contract(itemUUID, 'C', actualName, actualModel, value);
 					} else {
-						// Otherwise, treat as Material with quantity.
-						double quantity = (Double.parseDouble(indicator));
-						
-						//Default values in case the base item is not available.
-						String unit = "each";
-						double unitCost = 10.0; // default unit cost for materials
-						
-						if (baseItem != null && baseItem instanceof Material) {
+					    // Otherwise, treat as Material with quantity.
+					    double quantity = Double.parseDouble(indicator);
+					    
+					    // Default values in case the base item is not available.
+					    String unit = "each";
+					    double unitCost = 1.00; // default unit cost for materials
+					    
+					    if (baseItem != null && baseItem instanceof Material) {
 					        Material mat = (Material) baseItem;
-					        unit = mat.getUnit();
+					        unit = mat.getUnit();         // getUnit() should return the unit (e.g., "bag", "ton")
 					        unitCost = mat.getUnitCost();
 					    }
-						
-						item = new Material(itemUUID, 'M', actualName, actualModel, quantity, unitCost);
+					    
+					    // Use the unit instead of actualModel.
+					    item = new Material(itemUUID, 'M', actualName, unit, quantity, unitCost);
 					}
 				}
 

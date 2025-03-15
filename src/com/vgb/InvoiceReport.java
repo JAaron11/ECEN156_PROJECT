@@ -11,11 +11,9 @@ public class InvoiceReport {
     public static void main(String[] args) {
         // Redirect output to data/output.txt so all output goes to that file.
         try {
-            //Create a PrintStream for output.txt
         	PrintStream fileOut = new PrintStream(new FileOutputStream("data/output.txt"));
         	// Create a TeePrintStream that writes to both System.out and fileOut
         	TeePrintStream tee = new TeePrintStream(System.out, fileOut);
-        	// Set System.out to the tee stream so all output goes to both destinations
         	System.setOut(tee);
         } catch (IOException e) {
             System.err.println("Could not redirect output: " + e.getMessage());
