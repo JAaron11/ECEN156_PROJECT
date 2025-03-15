@@ -53,7 +53,7 @@ public class DetailedInvoiceReport {
             for (Item item : items) {
                 // Each concrete Item should override toString() to format its details.
                 System.out.println(item.toString());
-                System.out.printf("                                                              $%10.2f $%10.2f%n", inv.getTaxTotal(), inv.getSubtotal());
+                System.out.printf("                                                              $%10.2f $%10.2f%n", item.getTaxTotal(), item.getSubTotal());
             }
             System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-");
             System.out.printf("                                                   Subtotals $%10.2f $%10.2f%n",

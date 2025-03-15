@@ -51,4 +51,12 @@ public class Material extends Item {
 	public String getUnit() {
 		return unit;
 	}
+	
+	public double getSubTotal() {
+		return calculateSubTotal();
+	}
+	
+	public double getTaxTotal() {
+		return calculateTax();
+	}
 }

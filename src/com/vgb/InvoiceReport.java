@@ -23,11 +23,11 @@ public class InvoiceReport {
 
         try {
             // Load CSV data using CSVDataLoader methods.
-            List<Invoice> invoices = CSVDataLoader.parseInvoices("extraData/Invoices.csv");
-            List<Item> itemsLookup = CSVDataLoader.parseItems("extraData/Items.csv");
-            Map<UUID, List<Item>> invoiceItemsMap = CSVDataLoader.parseInvoiceItems("extraData/InvoiceItems.csv", itemsLookup);
-            List<Person> personsList = CSVDataLoader.parsePersons("extraData/Persons.csv");
-            List<Companies> companiesList = CSVDataLoader.parseCompanies("extraData/Companies.csv");
+            List<Invoice> invoices = CSVDataLoader.parseInvoices("data/Invoices.csv");
+            List<Item> itemsLookup = CSVDataLoader.parseItems("data/Items.csv");
+            Map<UUID, List<Item>> invoiceItemsMap = CSVDataLoader.parseInvoiceItems("data/InvoiceItems.csv", itemsLookup);
+            List<Person> personsList = CSVDataLoader.parsePersons("data/Persons.csv");
+            List<Companies> companiesList = CSVDataLoader.parseCompanies("data/Companies.csv");
 
             // Convert persons and companies lists into maps for easier lookup.
             Map<String, Person> persons = CSVDataLoader.convertPersonsToMap(personsList);

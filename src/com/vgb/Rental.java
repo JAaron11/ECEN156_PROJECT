@@ -6,6 +6,7 @@ public class Rental extends Item {
 
 	protected String model;
 	protected double rentalCost;
+	protected double baseEquipmentCost;
 	private double hours;
 
 	/**
@@ -21,8 +22,9 @@ public class Rental extends Item {
 	public Rental(UUID uuid, char type, String name, String model, double rentalCost, double hours) {
 		super(uuid, type, name);
 		this.model = model;
-		this.rentalCost = rentalCost;
+		this.baseEquipmentCost = rentalCost;
 		this.hours = hours;
+		this.rentalCost = rentalCost;
 	}
 
 	/**
@@ -30,15 +32,22 @@ public class Rental extends Item {
 	 * based on 0.1% of the base cost per hour. A tax rate of 4.38% is applied to
 	 * the rental cost.
 	 */
+	
+	public double getHours() {
+		return hours;
+	}
 
 	@Override
 	public double calculateTotalCost() {
-		double baseCost = rentalCost; // equipment's base cost
-		double perHourCharge = baseCost * 0.001;
+		double perHourCharge = rentalCost * 0.001;
 		double subTotal = perHourCharge * hours;
 		double tax = subTotal * 0.0438;
 		double total = subTotal + tax;
 		return Util.roundToTenths(total);
+	}
+	
+	public double getHourlyRate() {
+		return rentalCost * 0.001;
 	}
 
 	// Rental cost before taxes
@@ -59,5 +68,13 @@ public class Rental extends Item {
 	@Override
 	public String toString() {
 		return uuid + " (Rental) " + name + "-" + model + "\n\t" + hours + " hours";
+	}
+	
+	public double getSubTotal() {
+		return calculateSubTotal();
+	}
+	
+	public double getTaxTotal() {
+		return calculateTax();
 	}
 }

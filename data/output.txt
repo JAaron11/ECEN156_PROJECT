@@ -2,85 +2,89 @@
 |                             SummaryReport - By Total                                   |
 +----------------------------------------------------------------------------------------+
 Invoice #    Customer                       Num Items       Tax        Total     
-8a9bff38-24af-4a0c-b425-bf3a6fa64746 Weissnat and Okuneva           3               $     71.54 $  11572.54
-4f6adb47-2fdd-43b5-8ad0-c10bb4116e52 Abernathy-Schamberger          1               $     52.50 $   1052.50
-c89f1367-ce43-459e-8988-7e4d8cce83ce Weissnat and Okuneva           1               $     14.30 $    214.30
+5613f5cd-479e-419a-b320-45b3df507be1 Aimbu                          1               $    502.74 $  10078.74
+cb65970c-f50a-4342-a63b-1078b575703e Zooxo                          3               $    123.90 $  10536.57
+82bacdb7-30e2-41fa-abba-d83965b3baf9 Thoughtworks                   2               $     14.30 $   1172.82
 +----------------------------------------------------------------------------------------+
-                                              5               $    138.34
+                                              6               $    640.94 $  21788.13
 
 +----------------------------------------------------------------+
 |                 Company Invoice Summary Report                 |
 +----------------------------------------------------------------+
 Company                        # Invoices   Grand Total
-Abernathy-Schamberger          1            $   1052.50
-Weissnat and Okuneva           2            $  11786.84
+Aimbu                          1            $  10078.74
+Thoughtworks                   1            $   1172.82
+Zooxo                          1            $  10536.57
 +----------------------------------------------------------------+
-                               3            $  12839.34
-Invoice# 8a9bff38-24af-4a0c-b425-bf3a6fa64746
-Date     2025-01-13
+                               3            $  21788.13
+Invoice# 5613f5cd-479e-419a-b320-45b3df507be1
+Date     2025-01-14
 Customer:
-Weissnat and Okuneva (d7d7b071-e63f-4af5-88f3-2e47a09852fb)
-Tarren, Mateo (30f42bcf-2556-491e-8c0c-4e52d7dcfd90)
-	[mtarren0@cocolog-nifty.com]
+Aimbu (7e525a74-5e37-47dd-b5bf-e2d9d9a6672d)
+Taylor, Chicky (0db44946-5222-4ed7-b7b8-5135e9c6c8ad)
+	[ctaylor0@clickbank.net]
 
-	531 Bunting Way
-	Pasadena CA 91131
+	35094 Huxley Road
+	Wilmington Delaware 19810
 Sales Person:
-Ubee, Karia (65678ae9-43e6-48bf-b80f-6b6ec5189c66)
-	[kubee9@answers.com]
+Whiteland, Brande (bf298bca-fc6f-4694-87fb-37896ecedaec)
+	[bwhitelando@mashable.com]
+Items (1)                                                            Tax       Total
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
+f8b87cbc-cd4e-441f-a4db-62a2d963d399 (Purchase) 	Scraper-null9576.00
+                                                              $    502.74 $   9576.00
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
+                                                   Subtotals $    502.74 $   9576.00
+                                                 Grand Total             $  10078.74
+
+Invoice# cb65970c-f50a-4342-a63b-1078b575703e
+Date     2025-01-17
+Customer:
+Zooxo (14f86020-975c-464d-907a-b24fec2f719d)
+Pyson, Jeromy (9ab5d23f-10ad-4ada-87f5-629350ee4745)
+	[jpyson1@printfriendly.com]
+
+	5944 Beilfuss Plaza
+	Palo Alto California 94302
+Sales Person:
+Emmens, Antonin (e3de1cc8-4661-4c1c-a027-8f5b892e09fc)
+	[aemmensn@theguardian.com]
 Items (3)                                                            Tax       Total
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-ac47e0f6-5d5b-49fe-af54-a6625a6374a8 (Material) concrete
-	100.0 @ $10.0/null
-                                                              $     71.54 $  11501.00
-null (Contract) foundation pour
-	@ $10500.00
-                                                              $     71.54 $  11501.00
-e9afb98d-ac99-4974-a274-2dca5c1238f5 (Rental) Skid-Steer-null
-	20.0 hours
-                                                              $     71.54 $  11501.00
+50d5027a-1efd-4257-85e5-7b07edd89007 (Material) Plastic
+	50.0 @ $10.0/null
+                                                              $     35.75 $    500.00
+null (Contract) Curb & Gutter
+	@ $7900.00
+                                                              $      0.00 $   7900.00
+fbbdbb1a-de8e-40aa-bd1d-84f2b28d83d0 (Rental) Dragline-null
+	30.0 hours
+                                                              $     88.15 $   2012.67
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-                                                   Subtotals $     71.54 $  11501.00
-                                                 Grand Total             $  11572.54
+                                                   Subtotals $    123.90 $  10412.67
+                                                 Grand Total             $  10536.57
 
-Invoice# 4f6adb47-2fdd-43b5-8ad0-c10bb4116e52
-Date     2025-01-16
+Invoice# 82bacdb7-30e2-41fa-abba-d83965b3baf9
+Date     2023-01-23
 Customer:
-Abernathy-Schamberger (e2b1228a-1066-4f79-99c6-321658ef1587)
-Haugeh, Lydie (96aa54a4-f452-405c-82b2-12f262095f75)
-	[lhaugeh1@liveinternet.ru]
+Thoughtworks (0f4baafc-c72c-4df5-9327-01a651b18ab9)
+Parsonage, Sophey (856dc775-5d6a-4fd3-b30a-95b29200df17)
+	[sparsonage4@lulu.com]
 
-	243 Oriole Avenue
-	Seattle WA 98148
+	3488 Eliot Pass
+	Knoxville Tennessee 37914
 Sales Person:
-Ellam, Julietta (7f90331d-8d51-43d7-8fab-9d5baf6019bf)
-	[jellam3@dropbox.com]
-Items (1)                                                            Tax       Total
+Upfold, Giles (31153f25-b8dc-4656-8f66-3a07f33f699b)
+	[gupfoldm@usnews.com]
+Items (2)                                                            Tax       Total
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-4c0c851d-0466-42c8-8631-0b414db5be98 (Purchase) 	Bulldozer-null1000.00
-                                                              $     52.50 $   1000.00
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-                                                   Subtotals $     52.50 $   1000.00
-                                                 Grand Total             $   1052.50
-
-Invoice# c89f1367-ce43-459e-8988-7e4d8cce83ce
-Date     2025-01-12
-Customer:
-Weissnat and Okuneva (d7d7b071-e63f-4af5-88f3-2e47a09852fb)
-Tarren, Mateo (30f42bcf-2556-491e-8c0c-4e52d7dcfd90)
-	[mtarren0@cocolog-nifty.com]
-
-	531 Bunting Way
-	Pasadena CA 91131
-Sales Person:
-Gosdin, Louisette (6056d47e-dd04-46ee-b711-ba49d9d3d38a)
-	[lgosdin4@e-recht24.de]
-Items (1)                                                            Tax       Total
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-72e157ac-5b46-4b3b-b86b-599a89be7289 (Material) sand
+afc4727a-1a46-4aa2-a68e-00024e73ab1c (Lease) Compactor-null
+	869 days (2024-03-11 -> 2026-07-27)
+                                                              $      0.00 $    958.52
+d675bc7a-5460-401f-9fd9-86379f438d9f (Material) Dump Truck
 	20.0 @ $10.0/null
                                                               $     14.30 $    200.00
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-                          -=-=-=-=-=- -=-=-=-=-=-
-                                                   Subtotals $     14.30 $    200.00
-                                                 Grand Total             $    214.30
+                                                   Subtotals $     14.30 $   1158.52
+                                                 Grand Total             $   1172.82
 

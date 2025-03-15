@@ -117,20 +117,25 @@ public class CSVDataLoader {
 	public static Item createItem(String[] tokens) {
 		UUID uuid = UUID.fromString(tokens[0]);
 		char type = tokens[1].charAt(0);
-		String name = tokens[2];
-		String extra1 = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : null;
-		String extra2Str = tokens.length > 4 ? tokens [4] : "";
-		int extra2 = (extra2Str != null && !extra2Str.trim().isEmpty())
-					 ? Integer.parseInt(extra2Str.trim())
-					 : 0;
+		String name = tokens[2].trim();
+		String unit = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : "each";
+		//String extra2Str = tokens.length > 4 ? tokens [4] : "";
+		//double unitCost = (extra2Str != null && !extra2Str.trim().isEmpty())
+					 //? Integer.parseInt(extra2Str.trim())
+					 //: 0;
+		
+		double unitCost = 0;
+		if (tokens.length > 4 && !tokens[4].trim().isEmpty()) {
+			unitCost = Double.parseDouble(tokens[4].trim());
+		}
 		
 		switch (type) {
 		case 'E':
-			return new Equipment(uuid, type, name, extra1, extra2);
+			return new Equipment(uuid, type, name, unit, unitCost);
 		case 'M':
-			return new Equipment(uuid, type, name, extra1, extra2);
+			return new Material(uuid, type, name, unit, 0, unitCost);
 		case 'C':
-			return new Equipment(uuid, type, name, extra1, 0);
+			return new Contract(uuid, type, name, unit, 0);
 		default:
 			throw new IllegalArgumentException("Unknown item type: " + type);
 		}
@@ -226,26 +231,57 @@ public class CSVDataLoader {
 				
 				Item item = null;
 				if (indicator.equals("P")) {
-					// Equipment purchase.
-					// Optionally, token[3] may be the purchase cost.
-					double cost = (tokens.length > 3) ? Double.parseDouble(tokens[3].trim()) : 1000.0;
-					item = new Equipment(itemUUID, 'E', actualName, actualModel, cost);
+				    double cost;
+				    if (tokens.length > 3 && !tokens[3].trim().isEmpty()) {
+				        // Use the purchase cost provided in the invoice item row.
+				        cost = Double.parseDouble(tokens[3].trim());
+				    } else if (baseItem != null && baseItem instanceof Equipment) {
+				        // Fall back to the cost provided by the Equipment from the Items CSV.
+				        Equipment eq = (Equipment) baseItem;
+				        cost = eq.getEquipmentPrice(); // Assuming Equipment has a getter for its cost.
+				    } else {
+				        // If no cost is provided and no base item exists, use a default.
+				        cost = 1000.0;
+				    }
+				    item = new Equipment(itemUUID, 'E', actualName, actualModel, cost);
 				} else if (indicator.equals("L")) {
-					// Lease: expected tokens: indicator, startDate, endDate, dailyCost.
-					if (tokens.length >= 6) {
-						String startDateStr = tokens[3].trim();
-						String endDateStr = tokens[4].trim();
-						double dailyCost = Double.parseDouble(tokens[5].trim());
-						// Convert date strings to LocalDate (assumes ISO format "YYYY-MM-DD")
-						LocalDate startDate = LocalDate.parse(startDateStr);
-						LocalDate endDate = LocalDate.parse(endDateStr);
-						item = new Lease(itemUUID, 'L', actualName, actualModel, dailyCost, startDate, endDate);
-					}
+				    if (tokens.length >= 5) {
+				        String startDateStr = tokens[3].trim(); // e.g., 2025-02-01
+				        String endDateStr = tokens[4].trim();   // e.g., 2027-08-31
+				        // If the CSV doesn't have a 6th token for daily cost, we won't parse it here.
+				        
+				        // 1) Retrieve the base cost from the base item.
+				        double leaseCost = 0.0;
+				        if (baseItem != null && baseItem instanceof Equipment) {
+				            leaseCost = ((Equipment) baseItem).getEquipmentPrice();
+				        } else {
+				            // fallback default if not found
+				            leaseCost = 850.0; 
+				        }
+				        
+				        LocalDate startDate = LocalDate.parse(startDateStr);
+				        LocalDate endDate = LocalDate.parse(endDateStr);
+
+				        // 2) Pass that cost into your Lease constructor.
+				        item = new Lease(itemUUID, 'L', actualName, actualModel, leaseCost, startDate, endDate);
+				    }
 				} else if (indicator.equals("R")) {
-					// Rental: expected tokens: indicator, hours.
-					double hours = (tokens.length > 3) ? Double.parseDouble(tokens[3].trim()) : 1.0;
-					double hourlyRate = 50.0; // default hourly rate
-					item = new Rental(itemUUID, 'R', actualName, actualModel, hourlyRate, hours);
+				    // 1) Parse hours from token[3], or default if not provided.
+				    double hours;
+				    if (tokens.length > 3 && !tokens[3].trim().isEmpty()) {
+				        hours = Double.parseDouble(tokens[3].trim());
+				    } else {
+				        hours = 1.0; // fallback default if hours not specified
+				    }
+				    
+				    // 2) Retrieve the base equipment cost from the Items CSV (the base item).
+				    double baseCost = 0.0;
+				    if (baseItem != null && baseItem instanceof Equipment) {
+				        baseCost = ((Equipment) baseItem).getEquipmentPrice();
+				    }
+
+				    // 3) Create a Rental object using the base cost and hours.
+				    item = new Rental(itemUUID, 'R', actualName, actualModel, baseCost, hours);
 				} else {
 					// No indicator letter; assume a numeric value.
 					double value = Double.parseDouble(indicator);
@@ -260,7 +296,6 @@ public class CSVDataLoader {
 						String unit = "each";
 						double unitCost = 10.0; // default unit cost for materials
 						
-						// If a base item exists and it's a Material, use its unit cost (and unit).
 						if (baseItem != null && baseItem instanceof Material) {
 					        Material mat = (Material) baseItem;
 					        unit = mat.getUnit();

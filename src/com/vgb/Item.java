@@ -45,4 +45,8 @@ public abstract class Item {
 	public abstract double calculateTotalCost();
 
 	public abstract String toString();
+
+	public abstract double getTaxTotal();
+	
+	public abstract double getSubTotal();
 }

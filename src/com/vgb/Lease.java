@@ -59,4 +59,12 @@ public class Lease extends Item{
     public String toString() {
         return uuid + " (Lease) " + name + "-" + model + "\n\t" + (ChronoUnit.DAYS.between(startDate, endDate) + 1) + " days (" + startDate + " -> " + endDate + ")";
     }
+    
+    public double getSubTotal() {
+		return calculateSubTotal();
+	}
+	
+	public double getTaxTotal() {
+		return calculateTax();
+	}
 }
