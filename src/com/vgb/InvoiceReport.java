@@ -3,6 +3,7 @@ package com.vgb;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,6 +32,11 @@ public class InvoiceReport {
             Map<String, Person> persons = CSVDataLoader.convertPersonsToMap(personsList);
             Map<String, Companies> companies = CSVDataLoader.convertCompaniesToMap(companiesList);
 
+            Map<Integer,Companies> companiesById = new HashMap<>();
+            for (Companies comp : companiesList) {
+                companiesById.put(comp.getCompanyId(), comp);
+            }
+
             // Associate invoice items with invoices.
             for (Invoice inv : invoices) {
                 List<Item> items = invoiceItemsMap.get(inv.getInvoiceId());
@@ -42,14 +48,14 @@ public class InvoiceReport {
             }
 
             // Create report objects and print reports.
-            SummaryReport summaryReport = new SummaryReport();
-            summaryReport.printReport(invoices, companies);
+            SummaryReport        summaryReport  = new SummaryReport();
+            summaryReport.printReport(invoices, companies);               // unchanged
 
-            CompanyReport companyReport = new CompanyReport();
-            CompanyReport.printReport(invoices, companies);
+            CompanyReport        companyReport  = new CompanyReport();
+            CompanyReport.printReport(invoices, companiesById);          // <— use the new map
 
             DetailedInvoiceReport detailedReport = new DetailedInvoiceReport();
-            detailedReport.printReport(invoices, companies, persons);
+            detailedReport.printReport(invoices, companies, persons);     // unchanged
 
         } catch (IOException e) {
             System.err.println("Error loading CSV data: " + e.getMessage());

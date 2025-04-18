@@ -181,4 +181,27 @@ public class Invoice {
 	public String getSalesPerson() {
 		return this.salesPerson;
 	}
+	
+	public UUID getCustomerUuid() {
+        try {
+            return UUID.fromString(this.customer);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+	public void setInvoiceId(UUID fromString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDate(java.sql.Date date2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSalesPerson(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 }

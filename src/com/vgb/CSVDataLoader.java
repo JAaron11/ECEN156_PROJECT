@@ -79,30 +79,49 @@ public class CSVDataLoader {
 	 * @throws 	IOException
 	 */
 	public static List<Companies> parseCompanies(String filePath) throws IOException {
-		List<Companies> companies = new ArrayList<>();
-		List<String> lines = Files.readAllLines(Paths.get(filePath));
+	    List<Companies> companies = new ArrayList<>();
+	    List<String> lines = Files.readAllLines(Paths.get(filePath));
 
-		for (int i = 1; i < lines.size(); i++) {
-			String[] tokens = lines.get(i).split(",", -1);
+	    for (int i = 1; i < lines.size(); i++) {
+	        String[] tokens = lines.get(i).split(",", -1);
 
-			UUID companyUuid = safeParseUUID(tokens[0]);
-			UUID contactUuid = safeParseUUID(tokens[1]);
-			if (companyUuid == null || contactUuid == null)
-				continue; // Skips invalid UUIDs
+	        // 1) Parse the integer company_id from column 0
+	        int companyId;
+	        try {
+	            companyId = Integer.parseInt(tokens[0].trim());
+	        } catch (NumberFormatException e) {
+	            System.err.println("Invalid company ID at line " + (i+1) + ": " + tokens[0]);
+	            continue;
+	        }
 
-			String name = tokens[2].trim();
+	        // 2) Parse the UUIDs
+	        UUID companyUuid = safeParseUUID(tokens[1]);
+	        UUID contactUuid = safeParseUUID(tokens[2]);
+	        if (companyUuid == null || contactUuid == null) {
+	            // skip if either UUID is invalid
+	            continue;
+	        }
 
-			// Ensures all address fields exist before creating the Address object.
-			String street = tokens.length > 3 && !tokens[3].isEmpty() ? tokens[3].trim() : "Unknown";
-			String city = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : "Unknown";
-			String state = tokens.length > 5 && !tokens[5].isEmpty() ? tokens[5].trim() : "Unknown";
-			String zip = tokens.length > 6 && !tokens[6].isEmpty() ? tokens[6].trim() : "00000";
+	        // 3) The rest of your fields
+	        String name = tokens.length > 3 ? tokens[3].trim() : "Unknown";
 
-			Address address = new Address(street, city, state, zip); // Creates an address object
+	        String street = tokens.length > 4 && !tokens[4].isEmpty() ? tokens[4].trim() : "Unknown";
+	        String city   = tokens.length > 5 && !tokens[5].isEmpty() ? tokens[5].trim() : "Unknown";
+	        String state  = tokens.length > 6 && !tokens[6].isEmpty() ? tokens[6].trim() : "Unknown";
+	        String zip    = tokens.length > 7 && !tokens[7].isEmpty() ? tokens[7].trim() : "00000";
+	        Address address = new Address(street, city, state, zip);
 
-			companies.add(new Companies(companyUuid, contactUuid, name, address));
-		}
-		return companies;
+	        // 4) Call the new five‑arg constructor!
+	        companies.add(new Companies(
+	            companyId,
+	            companyUuid,
+	            contactUuid,
+	            name,
+	            address
+	        ));
+	    }
+
+	    return companies;
 	}
 
 	/**
