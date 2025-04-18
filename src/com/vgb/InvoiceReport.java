@@ -1,64 +1,67 @@
 package com.vgb;
 
+import com.vgb.db.InvoiceDAO;
+import com.vgb.db.CompanyDAO;
+import com.vgb.db.PersonDAO;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class InvoiceReport {
     public static void main(String[] args) {
-        // Redirect output to data/output.txt so all output goes to that file.
+        // 1) Redirect output
         try {
-        	PrintStream fileOut = new PrintStream(new FileOutputStream("data/output.txt"));
-        	// Create a TeePrintStream that writes to both System.out and fileOut
-        	TeePrintStream tee = new TeePrintStream(System.out, fileOut);
-        	System.setOut(tee);
+            PrintStream fileOut = new PrintStream(new FileOutputStream("data/output.txt"));
+            TeePrintStream tee = new TeePrintStream(System.out, fileOut);
+            System.setOut(tee);
         } catch (IOException e) {
             System.err.println("Could not redirect output: " + e.getMessage());
         }
 
         try {
-            // Load CSV data using CSVDataLoader methods.
-            List<Invoice> invoices = CSVDataLoader.parseInvoices("data/Invoices.csv");
-            List<Item> itemsLookup = CSVDataLoader.parseItems("data/Items.csv");
-            Map<UUID, List<Item>> invoiceItemsMap = CSVDataLoader.parseInvoiceItems("data/InvoiceItems.csv", itemsLookup);
-            List<Person> personsList = CSVDataLoader.parsePersons("data/Persons.csv");
-            List<Companies> companiesList = CSVDataLoader.parseCompanies("data/Companies.csv");
+            // 2) Load via DAOs
+            List<Invoice> invoices      = InvoiceDAO.loadAll();
+            List<Companies> companiesList = CompanyDAO.loadAll();
+            List<Person> personsList    = PersonDAO.loadAll();
 
-            // Convert persons and companies lists into maps for easier lookup.
-            Map<String, Person> persons = CSVDataLoader.convertPersonsToMap(personsList);
-            Map<String, Companies> companies = CSVDataLoader.convertCompaniesToMap(companiesList);
-
-            Map<Integer,Companies> companiesById = new HashMap<>();
-            for (Companies comp : companiesList) {
-                companiesById.put(comp.getCompanyId(), comp);
+            // 3a) Build ID‑keyed map for CompanyReport
+            Map<Integer, Companies> companiesById = new HashMap<>();
+            for (Companies c : companiesList) {
+                companiesById.put(c.getCompanyId(), c);
             }
 
-            // Associate invoice items with invoices.
-            for (Invoice inv : invoices) {
-                List<Item> items = invoiceItemsMap.get(inv.getInvoiceId());
-                if (items != null) {
-                    for (Item item : items) {
-                        inv.addItems(item);
-                    }
-                }
+            // 3b) Build UUID‑string‑keyed map for SummaryReport & DetailedInvoiceReport
+            Map<String, Companies> companiesByUuid = new HashMap<>();
+            for (Companies c : companiesList) {
+                companiesByUuid.put(c.getCompanyUuid().toString(), c);
             }
 
-            // Create report objects and print reports.
-            SummaryReport        summaryReport  = new SummaryReport();
-            summaryReport.printReport(invoices, companies);               // unchanged
+            // 3c) Build person UUID‑string‑keyed map for DetailedInvoiceReport
+            Map<String, Person> personsByUuid = new HashMap<>();
+            for (Person p : personsList) {
+                // adjust to match your getter name (getPersonUuid() or getUuid())
+                personsByUuid.put(p.getUuid().toString(), p);
+            }
 
-            CompanyReport        companyReport  = new CompanyReport();
-            CompanyReport.printReport(invoices, companiesById);          // <— use the new map
+            // 4) Invoke reports with matching signature
 
-            DetailedInvoiceReport detailedReport = new DetailedInvoiceReport();
-            detailedReport.printReport(invoices, companies, persons);     // unchanged
+            // SummaryReport wants (List<Invoice>, Map<String,Companies>)
+            SummaryReport summary = new SummaryReport();
+            summary.printReport(invoices, companiesByUuid);
 
-        } catch (IOException e) {
-            System.err.println("Error loading CSV data: " + e.getMessage());
+            // CompanyReport wants (List<Invoice>, Map<Integer,Companies>)
+            CompanyReport companyRpt = new CompanyReport();
+            companyRpt.printReport(invoices, companiesById);
+
+            // DetailedInvoiceReport wants (List<Invoice>, Map<String,Companies>, Map<String,Person>)
+            DetailedInvoiceReport detail = new DetailedInvoiceReport();
+            detail.printReport(invoices, companiesByUuid, personsByUuid);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 }

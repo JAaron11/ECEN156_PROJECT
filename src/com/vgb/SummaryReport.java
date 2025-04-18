@@ -6,34 +6,52 @@ import java.util.Map;
 public class SummaryReport {
     /**
      * Prints the summary report of invoices.
-     * @param invoices List of Invoice objects.
-     * @param companies Map of company UUID (as String) to Companies object.
+     * @param invoices  List of Invoice objects.
+     * @param companies Map from company‐UUID to Company.
      */
-    public void printReport(List<Invoice> invoices, Map<String, Companies> companies) {
-        System.out.println("+----------------------------------------------------------------------------------------+");
-        System.out.println("|                             SummaryReport - By Total                                   |");
-        System.out.println("+----------------------------------------------------------------------------------------+");
-        System.out.printf("%-12s %-30s %-15s %-10s %-10s%n", "Invoice #", "Customer", "Num Items", "Tax", "Total");
+    public void printReport(List<Invoice> invoices, Map<String,Companies> companies) {
+        System.out.println("+---------------------------------------------------------------------------------------------+");
+        System.out.println("|                               SummaryReport ‑ By Total                                      |");
+        System.out.println("+---------------------------------------------------------------------------------------------+");
 
-        int overallItems = 0;
-        double overallTax = 0;
+        // Header: 36 + 2 + 30 + 2 + 10 + 2 + 10 + 2 + 10 = ~104 chars
+        System.out.printf("%-36s  %-30s  %-10s  %-10s  %-10s%n",
+                          "Invoice #", "Customer", "NumItems", "Tax", "Total");
+
+        int  overallItems = 0;
+        double overallTax   = 0;
         double overallTotal = 0;
+
         for (Invoice inv : invoices) {
-            int numItems = inv.getItems().size();
-            double tax = inv.getTaxTotal();
-            double total = inv.getGrandTotal();
+            String custUuid = inv.getCustomer();  // now really a UUID
+            Companies comp    = companies.get(custUuid);
+            String name     = (comp != null)
+                                ? comp.getName()
+                                : custUuid;
+
+            int    numItems = inv.getItems().size();
+            double tax      = inv.getTaxTotal();
+            double total    = inv.getGrandTotal();
+
             overallItems += numItems;
-            overallTax += tax;
+            overallTax   += tax;
             overallTotal += total;
-            String customerUUID = inv.getCustomer();
-            String companyName = companies.containsKey(customerUUID)
-                    ? companies.get(customerUUID).getName()
-                    : customerUUID;
-            System.out.printf("%-12s %-30s %-15d $%10.2f $%10.2f%n", 
-                    inv.getInvoiceId(), companyName, numItems, tax, total);
+
+            System.out.printf("%-36s  %-30s  %10d  $%9.2f  $%9.2f%n",
+                              inv.getInvoiceId().toString(),
+                              name,
+                              numItems,
+                              tax,
+                              total);
         }
-        System.out.println("+----------------------------------------------------------------------------------------+");
-        // Print overall totals
-        System.out.printf("%-45s %-15d $%10.2f $%10.2f%n", "", overallItems, overallTax, overallTotal);
+
+        System.out.println("+---------------------------------------------------------------------------------------------+");
+        // Print overall totals row (label in first two columns)
+        System.out.printf("%-36s  %-30s  %10d  $%9.2f  $%9.2f%n",
+                          "",    // blank UUID
+                          "Overall Totals:",
+                          overallItems,
+                          overallTax,
+                          overallTotal);
     }
 }

@@ -33,7 +33,7 @@ public class Companies {
         this.address     = address;
     }
 
-    /** Returns the integer DB ID. */
+	/** Returns the integer DB ID. */
     public int getCompanyId() {
         return companyId;
     }
@@ -84,4 +84,9 @@ public class Companies {
                ", address="     + address +
                '}';
     }
+
+	public void setPrimaryContact(Person contact) {
+		// TODO Auto-generated method stub
+		
+	}
 }
