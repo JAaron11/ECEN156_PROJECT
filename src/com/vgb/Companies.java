@@ -84,9 +84,4 @@ public class Companies {
                ", address="     + address +
                '}';
     }
-
-	public void setPrimaryContact(Person contact) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -1,3 +1,7 @@
+/**
+ * A basic class implemented to write to both the output.txt and to the console as well.
+ */
+
 package com.vgb;
 
 import java.io.PrintStream;

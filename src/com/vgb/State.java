@@ -1,4 +1,3 @@
-// src/main/java/com/vgb/State.java
 package com.vgb;
 
 /**

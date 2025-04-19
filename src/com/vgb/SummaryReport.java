@@ -14,7 +14,6 @@ public class SummaryReport {
         System.out.println("|                               SummaryReport ‑ By Total                                      |");
         System.out.println("+---------------------------------------------------------------------------------------------+");
 
-        // Header: 36 + 2 + 30 + 2 + 10 + 2 + 10 + 2 + 10 = ~104 chars
         System.out.printf("%-36s  %-30s  %-10s  %-10s  %-10s%n",
                           "Invoice #", "Customer", "NumItems", "Tax", "Total");
 
@@ -23,7 +22,7 @@ public class SummaryReport {
         double overallTotal = 0;
 
         for (Invoice inv : invoices) {
-            String custUuid = inv.getCustomer();  // now really a UUID
+            String custUuid = inv.getCustomer();  
             Companies comp    = companies.get(custUuid);
             String name     = (comp != null)
                                 ? comp.getName()

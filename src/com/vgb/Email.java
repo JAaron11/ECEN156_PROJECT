@@ -1,4 +1,3 @@
-// src/main/java/com/vgb/Email.java
 package com.vgb;
 
 import java.util.UUID;

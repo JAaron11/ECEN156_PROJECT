@@ -110,12 +110,12 @@ Grand Total: 0.0
 Customer Details:
   Aimbu (7e525a74-5e37-47dd-b5bf-e2d9d9a6672d)
     Contact: Taylor, Chicky (0db44946-5222-4ed7-b7b8-5135e9c6c8ad)
-      []
+      [ctaylor0@clickbank.net]
     Address: 35094 Huxley Road, Wilmington DE 19810
 
 Sales Person:
   Whiteland, Brande (bf298bca-fc6f-4694-87fb-37896ecedaec)
-    []
+    [bwhitelando@mashable.com]
 
 ================================================================================
 
@@ -137,12 +137,12 @@ Grand Total: 71146.92
 Customer Details:
   Zooxo (14f86020-975c-464d-907a-b24fec2f719d)
     Contact: Pyson, Jeromy (9ab5d23f-10ad-4ada-87f5-629350ee4745)
-      []
+      [jpyson1@printfriendly.com]
     Address: 5944 Beilfuss Plaza, Palo Alto CA 94302
 
 Sales Person:
   Emmens, Antonin (e3de1cc8-4661-4c1c-a027-8f5b892e09fc)
-    []
+    [aemmensn@theguardian.com]
 
 ================================================================================
 
@@ -162,12 +162,12 @@ Grand Total: 128191.35
 Customer Details:
   Thoughtworks (0f4baafc-c72c-4df5-9327-01a651b18ab9)
     Contact: Parsonage, Sophey (856dc775-5d6a-4fd3-b30a-95b29200df17)
-      []
+      [sparsonage4@lulu.com]
     Address: 3488 Eliot Pass, Knoxville TN 37914
 
 Sales Person:
   Upfold, Giles (31153f25-b8dc-4656-8f66-3a07f33f699b)
-    []
+    [gupfoldm@usnews.com]
 
 ================================================================================
 

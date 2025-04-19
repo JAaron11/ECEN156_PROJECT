@@ -1,4 +1,3 @@
-// src/main/java/com/vgb/ZipCode.java
 package com.vgb;
 
 /**

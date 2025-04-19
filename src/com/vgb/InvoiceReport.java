@@ -26,25 +26,25 @@ public class InvoiceReport {
             List<Companies> companiesList  = CompanyDAO.loadAll();
             List<Person>    personsList    = PersonDAO.loadAll();
 
-            // 3a) Build UUID‑string‑keyed map for SummaryReport & CompanyReport & DetailedInvoiceReport
+            // 3a) Build UUID string keyed map for SummaryReport & CompanyReport & DetailedInvoiceReport
             Map<String, Companies> companiesByUuid = new HashMap<>();
             for (Companies c : companiesList) {
                 companiesByUuid.put(c.getCompanyUuid().toString(), c);
             }
 
-            // 3b) Build person UUID‑string‑keyed map for DetailedInvoiceReport
+            // 3b) Build person UUID string keyed map for DetailedInvoiceReport
             Map<String, Person> personsByUuid = new HashMap<>();
             for (Person p : personsList) {
                 personsByUuid.put(p.getUuid().toString(), p);
             }
 
-            // 4) Invoke your reports with matching signatures
+            // 4) Invoke reports with matching signatures
 
             // 4a) SummaryReport wants (List<Invoice>, Map<String,Companies>)
             SummaryReport summary = new SummaryReport();
             summary.printReport(invoices, companiesByUuid);
 
-            // 4b) CompanyReport now wants (List<Invoice>, Map<String,Companies>) as well
+            // 4b) CompanyReport wants (List<Invoice>, Map<String,Companies>) as well
             CompanyReport companyRpt = new CompanyReport();
             companyRpt.printReport(invoices, companiesByUuid);
 

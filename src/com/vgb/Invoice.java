@@ -158,12 +158,6 @@ public class Invoice {
 		System.out.println("Grand Total: $" + getGrandTotal());
 	}
 
-	/**
-	 * Sets the customer for this invoice.
-	 * 
-	 * @param customer The customer name or identifier.
-	 */
-
 	public UUID getInvoiceId() {
 		return this.invoiceId;
 	}
@@ -184,6 +178,12 @@ public class Invoice {
 		return this.salesPerson;
 	}
 
+	/**
+	 * Sets the customer for this invoice.
+	 * 
+	 * @param customer The customer name or identifier.
+	 */
+	
 	public UUID getCustomerUuid() {
 		try {
 			return UUID.fromString(this.customer);
@@ -192,27 +192,22 @@ public class Invoice {
 		}
 	}
 
-	/** Called by InvoiceDAO to set the seeded UUID */
 	public void setInvoiceId(UUID invoiceId) {
 		this.invoiceId = invoiceId;
 	}
 
-	/** Called by InvoiceDAO to set the seeded date */
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	/** Called by InvoiceDAO to set the salesperson name */
 	public void setSalesPerson(String salesPerson) {
 		this.salesPerson = salesPerson;
 	}
 
-	/** DAO will call this to record the FK on the invoice */
 	public void setCustomerCompanyId(int id) {
 		this.customerCompanyId = id;
 	}
 
-	/** You already have this, used by DAO to set the company name */
 	public void setCustomer(String customer) {
 		this.customer = customer;
 	}

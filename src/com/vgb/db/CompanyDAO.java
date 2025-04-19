@@ -42,7 +42,7 @@ public class CompanyDAO {
 					}
 				}
 
-				// 4) Call the five‑arg constructor
+				// 4) Call the five-arg constructor
 				return new Companies(id, uuid, contactUuid, name, address);
 			}
 		}
