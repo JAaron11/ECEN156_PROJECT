@@ -22,59 +22,45 @@ public class InvoiceData {
 	 * Removes all records from all tables in the database.
 	 */
 	public static void clearDatabase() {
-	    String[] tables = {
-	        // subtype specs
-	        "LeaseSpec",
-	        "RentalSpec",
-	        "MaterialSpec",
-	        "ContractSpec",
-	        "EquipmentSpec",
-
-	        // join table
-	        "InvoiceLine",
-
-	        // header
-	        "Invoice",
-
-	        // catalog
-	        "Item",
-
-	        // email
-	        "Email",
-
-	        // company before person (because Person → Company.primary_contact_id)
-	        "Company",
-
-	        // person
-	        "Person",
-
-	        // addresses and lookups
-	        "Address",
-	        "ZipCode",
-	        "State"
-	    };
+		String[] tables = {
+				// subtype specs
+				"LeaseSpec", "RentalSpec", "MaterialSpec", "ContractSpec", "EquipmentSpec",
+				// join table
+				"InvoiceLine",
+				// header
+				"Invoice",
+				// catalog
+				"Item",
+				// email
+				"Email",
+				// company before person
+				"Company",
+				// person
+				"Person",
+				// addresses and lookups
+				"Address", "ZipCode", "State" };
 
 		try (Connection conn = DatabaseUtils.getConnection()) {
-	        conn.setAutoCommit(false);
-	        try (Statement stmt = conn.createStatement()) {
-	            for (String table : tables) {
-	                stmt.executeUpdate("delete from " + table);
-	            }
-	            conn.commit();
-	        } catch (SQLException ex) {
-	            // rollback if any delete fails
-	            try {
-	                conn.rollback();
-	            } catch (SQLException rbEx) {
-	                // log or wrap rollback failure too
-	                throw new RuntimeException("Failed to rollback after clearDatabase error", rbEx);
-	            }
-	            throw new RuntimeException("Failed to clear database", ex);
-	        }
-	    } catch (SQLException ex) {
-	        // catches getConnection() and setAutoCommit() failures
-	        throw new RuntimeException("Failed to clear database", ex);
-	    }
+			conn.setAutoCommit(false);
+			try (Statement stmt = conn.createStatement()) {
+				for (String table : tables) {
+					stmt.executeUpdate("delete from " + table);
+				}
+				conn.commit();
+			} catch (SQLException ex) {
+				// rollback if any delete fails
+				try {
+					conn.rollback();
+				} catch (SQLException rbEx) {
+					// log or wrap rollback failure too
+					throw new RuntimeException("Failed to rollback after clearDatabase error", rbEx);
+				}
+				throw new RuntimeException("Failed to clear database", ex);
+			}
+		} catch (SQLException ex) {
+			// catches getConnection() and setAutoCommit() failures
+			throw new RuntimeException("Failed to clear database", ex);
+		}
 	}
 
 	/**
@@ -107,36 +93,39 @@ public class InvoiceData {
 	 * @param email
 	 */
 	public static void addEmail(UUID personUuid, String email) {
-		final String FIND_PERSON_SQL =
-		        "select person_id from Person where person_uuid = ?";
-		    final String INSERT_EMAIL_SQL =
-		        "insert into Email (email_uuid, person_id, email_address) values (?, ?, ?)";
 
-		    try (Connection conn = DatabaseUtils.getConnection()) {
-		        // 1) lookup the surrogate PK
-		        int personId;
-		        try (PreparedStatement findPs = conn.prepareStatement(FIND_PERSON_SQL)) {
-		            findPs.setString(1, personUuid.toString());
-		            try (ResultSet rs = findPs.executeQuery()) {
-		                if (!rs.next()) {
-		                    throw new RuntimeException("No Person found for UUID " + personUuid);
-		                }
-		                personId = rs.getInt("person_id");
-		            }
-		        }
-
-		        // 2) insert email with generated UUID
-		        try (PreparedStatement insertPs = conn.prepareStatement(INSERT_EMAIL_SQL)) {
-		            insertPs.setString(1, UUID.randomUUID().toString());
-		            insertPs.setInt   (2, personId);
-		            insertPs.setString(3, email);
-		            insertPs.executeUpdate();
-		        }
-
-		    } catch (SQLException ex) {
-		        throw new RuntimeException("Failed to add email for: " + personUuid, ex);
-		    }
+		if (email == null || email.trim().isEmpty()) {
+			return;
 		}
+
+		final String FIND_PERSON_SQL = "select person_id from Person where person_uuid = ?";
+		final String INSERT_EMAIL_SQL = "insert into Email (email_uuid, person_id, email_address) values (?, ?, ?)";
+
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			// 1) lookup the surrogate PK
+			int personId;
+			try (PreparedStatement findPs = conn.prepareStatement(FIND_PERSON_SQL)) {
+				findPs.setString(1, personUuid.toString());
+				try (ResultSet rs = findPs.executeQuery()) {
+					if (!rs.next()) {
+						throw new RuntimeException("No Person found for UUID " + personUuid);
+					}
+					personId = rs.getInt("person_id");
+				}
+			}
+
+			// 2) insert email with generated UUID
+			try (PreparedStatement insertPs = conn.prepareStatement(INSERT_EMAIL_SQL)) {
+				insertPs.setString(1, UUID.randomUUID().toString());
+				insertPs.setInt(2, personId);
+				insertPs.setString(3, email);
+				insertPs.executeUpdate();
+			}
+
+		} catch (SQLException ex) {
+			throw new RuntimeException("Failed to add email for: " + personUuid, ex);
+		}
+	}
 
 	/**
 	 * Adds a company record to the database with the primary contact person
@@ -152,17 +141,33 @@ public class InvoiceData {
 	 */
 	public static void addCompany(UUID companyUuid, UUID contactUuid, String name, String street, String city,
 			String state, String zip) {
-		final String SQL = "insert into Company (company_uuid, contact_uuid, name, street, city, state, zip) values (?, ?, ?, ?, ?, ?, ?)";
+		final String FIND_PERSON_SQL = "SELECT person_id FROM Person WHERE person_uuid = ?";
+		final String INSERT_COMPANY_SQL = "INSERT INTO Company "
+				+ "(company_uuid, company_name, company_type, primary_contact_id, address_id) "
+				+ "VALUES (?, ?, ?, ?, NULL)";
 
-		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, companyUuid.toString());
-			ps.setString(2, contactUuid.toString());
-			ps.setString(3, name);
-			ps.setString(4, street);
-			ps.setString(5, city);
-			ps.setString(6, state);
-			ps.setString(7, zip);
-			ps.executeUpdate();
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			// 1) lookup person_id for the contact
+			int personId;
+			try (PreparedStatement findPs = conn.prepareStatement(FIND_PERSON_SQL)) {
+				findPs.setString(1, contactUuid.toString());
+				try (ResultSet rs = findPs.executeQuery()) {
+					if (!rs.next()) {
+						throw new RuntimeException("No Person found for UUID " + contactUuid);
+					}
+					personId = rs.getInt("person_id");
+				}
+			}
+
+			// 2) insert the company (address_id left NULL)
+			try (PreparedStatement ps = conn.prepareStatement(INSERT_COMPANY_SQL)) {
+				ps.setString(1, companyUuid.toString());
+				ps.setString(2, name);
+				ps.setString(3, "Client"); // default type
+				ps.setInt(4, personId);
+				ps.executeUpdate();
+			}
+
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add company: " + companyUuid, ex);
 		}
@@ -177,13 +182,13 @@ public class InvoiceData {
 	 * @param retailPrice
 	 */
 	public static void addEquipment(UUID equipmentUuid, String name, String modelNumber, double retailPrice) {
-		final String SQL = "insert into Equipment (equipment_uuid, name, model_number, retail_price) values (?, ?, ?, ?)";
+		final String SQL = "insert into Item (item_uuid, item_type, description, base_cost) values (?, 'Equipment', ?, ?)";
 
 		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
 			ps.setString(1, equipmentUuid.toString());
-			ps.setString(2, name);
-			ps.setString(3, modelNumber);
-			ps.setDouble(4, retailPrice);
+			ps.setString(2, name + " (model " + modelNumber + ")");
+			ps.setDouble(3, retailPrice);
+			// ps.setDouble(4, retailPrice);
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add equipment " + equipmentUuid, ex);
@@ -199,13 +204,13 @@ public class InvoiceData {
 	 * @param pricePerUnit
 	 */
 	public static void addMaterial(UUID materialUuid, String name, String unit, double pricePerUnit) {
-		final String SQL = "insert into Material (material_uuid, name, unit, price_per_unit) values (?, ?, ?, ?)";
+		final String SQL = "INSERT INTO Item (item_uuid, item_type, description, base_cost) "
+				+ "VALUES (?, 'Material', ?, ?)";
 
 		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
 			ps.setString(1, materialUuid.toString());
-			ps.setString(2, name);
-			ps.setString(3, unit);
-			ps.setDouble(4, pricePerUnit);
+			ps.setString(2, name + " (" + unit + ")");
+			ps.setDouble(3, pricePerUnit);
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add material " + materialUuid, ex);
@@ -221,12 +226,12 @@ public class InvoiceData {
 	 * @param pricePerUnit
 	 */
 	public static void addContract(UUID contractUuid, String name, UUID servicerUuid) {
-		final String SQL = "insert into Contract (contract_uuid, name, servicer_uuid) values (?, ?, ?)";
+		final String SQL = "INSERT INTO Item (item_uuid, item_type, description, base_cost) "
+				+ "VALUES (?, 'Contract', ?, 0.00)";
 
 		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
 			ps.setString(1, contractUuid.toString());
-			ps.setString(2, name);
-			ps.setString(3, servicerUuid.toString());
+			ps.setString(2, name + " (servicer " + servicerUuid + ")");
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add contract " + contractUuid, ex);
@@ -242,18 +247,46 @@ public class InvoiceData {
 	 * @param date
 	 */
 	public static void addInvoice(UUID invoiceUuid, UUID customerUuid, UUID salesPersonUuid, LocalDate date) {
-		final String SQL = "insert into Invoice (invoice_uuid, customer_uuid, salesperson_uuid, invoice_date) values (?, ?, ?, ?)";
+		final String FIND_COMPANY_SQL = "SELECT company_id FROM Company WHERE company_uuid = ?";
+		final String FIND_PERSON_SQL = "SELECT person_id FROM Person  WHERE person_uuid  = ?";
+		final String INSERT_SQL = "INSERT INTO Invoice "
+				+ "(invoice_uuid, customer_company_id, salesperson_id, invoice_date) " + "VALUES (?, ?, ?, ?)";
 
-		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, invoiceUuid.toString());
-			ps.setString(2, customerUuid.toString());
-			ps.setString(3, salesPersonUuid.toString());
-			ps.setDate(4, Date.valueOf(date));
-			ps.executeUpdate();
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			// 1) lookup company_id
+			int companyId;
+			try (PreparedStatement ps = conn.prepareStatement(FIND_COMPANY_SQL)) {
+				ps.setString(1, customerUuid.toString());
+				try (ResultSet rs = ps.executeQuery()) {
+					if (!rs.next())
+						throw new RuntimeException("No Company for " + customerUuid);
+					companyId = rs.getInt("company_id");
+				}
+			}
+
+			// 2) lookup person_id for salesperson
+			int personId;
+			try (PreparedStatement ps = conn.prepareStatement(FIND_PERSON_SQL)) {
+				ps.setString(1, salesPersonUuid.toString());
+				try (ResultSet rs = ps.executeQuery()) {
+					if (!rs.next())
+						throw new RuntimeException("No Person for " + salesPersonUuid);
+					personId = rs.getInt("person_id");
+				}
+			}
+
+			// 3) insert invoice
+			try (PreparedStatement ps = conn.prepareStatement(INSERT_SQL)) {
+				ps.setString(1, invoiceUuid.toString());
+				ps.setInt(2, companyId);
+				ps.setInt(3, personId);
+				ps.setDate(4, Date.valueOf(date));
+				ps.executeUpdate();
+			}
+
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add invoice " + invoiceUuid, ex);
 		}
-
 	}
 
 	/**
@@ -263,11 +296,13 @@ public class InvoiceData {
 	 * @param itemUuid
 	 */
 	public static void addEquipmentPurchaseToInvoice(UUID invoiceUuid, UUID itemUuid) {
-		final String SQL = "insert into EquipmentPurchase (invoice_uuid, equipment_uuid) values (?, ?)";
-
+		final String SQL = "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) " + "VALUES (?, "
+				+ "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), "
+				+ "(SELECT item_id    FROM Item    WHERE item_uuid    = ?)" + ")";
 		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, invoiceUuid.toString());
-			ps.setString(2, itemUuid.toString());
+			ps.setString(1, UUID.randomUUID().toString());
+			ps.setString(2, invoiceUuid.toString());
+			ps.setString(3, itemUuid.toString());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add equipment purchase to invoice " + invoiceUuid, ex);
@@ -283,14 +318,32 @@ public class InvoiceData {
 	 * @param end
 	 */
 	public static void addEquipmentLeaseToInvoice(UUID invoiceUuid, UUID itemUuid, LocalDate start, LocalDate end) {
-		final String SQL = "insert into EquipmentLease (invoice_uuid, equipment_uuid, lease_start, lease_end) values (?, ?, ?, ?)";
+		final String INSERT_LINE_SQL = "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) VALUES (?, "
+				+ "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), "
+				+ "(SELECT item_id    FROM Item    WHERE item_uuid    = ?)" + ")";
+		final String INSERT_SPEC_SQL = "INSERT INTO LeaseSpec (line_id, start_date, end_date, lease_rate) VALUES ("
+				+ "LAST_INSERT_ID(), ?, ?, (SELECT base_cost FROM Item WHERE item_uuid = ?)" + ")";
 
-		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, invoiceUuid.toString());
-			ps.setString(2, itemUuid.toString());
-			ps.setDate(3, Date.valueOf(start));
-			ps.setDate(4, Date.valueOf(end));
-			ps.executeUpdate();
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
+					PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
+
+				linePs.setString(1, UUID.randomUUID().toString());
+				linePs.setString(2, invoiceUuid.toString());
+				linePs.setString(3, itemUuid.toString());
+				linePs.executeUpdate();
+
+				specPs.setDate(1, Date.valueOf(start));
+				specPs.setDate(2, Date.valueOf(end));
+				specPs.setString(3, itemUuid.toString());
+				specPs.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException e) {
+				conn.rollback();
+				throw e;
+			}
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add equipment lease to invoice " + invoiceUuid, ex);
 		}
@@ -304,13 +357,31 @@ public class InvoiceData {
 	 * @param numberOfHours
 	 */
 	public static void addEquipmentRentalToInvoice(UUID invoiceUuid, UUID itemUuid, double numberOfHours) {
-		final String SQL = "insert into EquipmentRental (invoice_uuid, equipment_uuid, hours_rented) values (?, ?, ?)";
+		final String INSERT_LINE_SQL = "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) VALUES (?, "
+				+ "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), "
+				+ "(SELECT item_id FROM Item WHERE item_uuid = ?)" + ")";
+		final String INSERT_SPEC_SQL = "INSERT INTO RentalSpec (line_id, hours, hourly_rate) VALUES ("
+				+ "LAST_INSERT_ID(), ?, (SELECT base_cost FROM Item WHERE item_uuid = ?)" + ")";
 
-		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, invoiceUuid.toString());
-			ps.setString(2, itemUuid.toString());
-			ps.setDouble(3, numberOfHours);
-			ps.executeUpdate();
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
+					PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
+
+				linePs.setString(1, UUID.randomUUID().toString());
+				linePs.setString(2, invoiceUuid.toString());
+				linePs.setString(3, itemUuid.toString());
+				linePs.executeUpdate();
+
+				specPs.setDouble(1, numberOfHours);
+				specPs.setString(2, itemUuid.toString());
+				specPs.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException e) {
+				conn.rollback();
+				throw e;
+			}
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add equipment rental to invoice " + invoiceUuid, ex);
 		}
@@ -324,13 +395,31 @@ public class InvoiceData {
 	 * @param numberOfUnits
 	 */
 	public static void addMaterialToInvoice(UUID invoiceUuid, UUID itemUuid, int numberOfUnits) {
-		final String SQL = "insert into MaterialPurchase (invoice_uuid, material_uuid, quantity) values (?, ?, ?)";
+		final String INSERT_LINE_SQL = "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id, quantity) VALUES (?, "
+				+ "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), "
+				+ "(SELECT item_id    FROM Item    WHERE item_uuid    = ?), ?)";
+		final String INSERT_SPEC_SQL = "INSERT INTO MaterialSpec (line_id, unit_price) VALUES ("
+				+ "LAST_INSERT_ID(), (SELECT base_cost FROM Item WHERE item_uuid = ?)" + ")";
 
-		try (Connection conn = DatabaseUtils.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL)) {
-			ps.setString(1, invoiceUuid.toString());
-			ps.setString(2, itemUuid.toString());
-			ps.setInt(3, numberOfUnits);
-			ps.executeUpdate();
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
+					PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
+
+				linePs.setString(1, UUID.randomUUID().toString());
+				linePs.setString(2, invoiceUuid.toString());
+				linePs.setString(3, itemUuid.toString());
+				linePs.setInt(4, numberOfUnits);
+				linePs.executeUpdate();
+
+				specPs.setString(1, itemUuid.toString());
+				specPs.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException e) {
+				conn.rollback();
+				throw e;
+			}
 		} catch (SQLException ex) {
 			throw new RuntimeException("Failed to add material to invoice " + invoiceUuid, ex);
 		}
@@ -344,19 +433,41 @@ public class InvoiceData {
 	 * @param amount
 	 */
 	public static void addContractToInvoice(UUID invoiceUuid, UUID itemUuid, double amount) {
-		final String SQL =
-	            "insert into ContractPurchase (invoice_uuid, contract_uuid, amount) values (?, ?, ?)";
+		final String INSERT_LINE_SQL =
+		        "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) VALUES (?, " +
+		          "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), " +
+		          "(SELECT item_id    FROM Item    WHERE item_uuid    = ?)" +
+		        ")";
 
-	        try (Connection conn = DatabaseUtils.getConnection();
-	             PreparedStatement ps = conn.prepareStatement(SQL)) {
-	            ps.setString(1, invoiceUuid.toString());
-	            ps.setString(2, itemUuid.toString());
-	            ps.setDouble(3, amount);
-	            ps.executeUpdate();
-	        } catch (SQLException ex) {
-	            throw new RuntimeException("Failed to add contract to invoice " + invoiceUuid, ex);
-	        }
+		    final String INSERT_SPEC_SQL =
+		        "INSERT INTO ContractSpec (line_id, vendor_company_id, contract_terms) VALUES (" +
+		          "LAST_INSERT_ID(), " +
+		          "(SELECT customer_company_id FROM Invoice WHERE invoice_uuid = ?), " +
+		          "?)";
 
-	}
+		    try (Connection conn = DatabaseUtils.getConnection()) {
+		        conn.setAutoCommit(false);
+		        try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
+		             PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
 
+		            // 1) the InvoiceLine insert
+		            linePs.setString(1, UUID.randomUUID().toString());
+		            linePs.setString(2, invoiceUuid.toString());
+		            linePs.setString(3, itemUuid.toString());
+		            linePs.executeUpdate();
+
+		            // 2) the ContractSpec insert, using the invoice’s customer as the “vendor”
+		            specPs.setString(1, invoiceUuid.toString());
+		            specPs.setString(2, String.format("$%.2f", amount));
+		            specPs.executeUpdate();
+
+		            conn.commit();
+		        } catch (SQLException e) {
+		            conn.rollback();
+		            throw e;
+		        }
+		    } catch (SQLException ex) {
+		        throw new RuntimeException("Failed to add contract to invoice " + invoiceUuid, ex);
+		    }
+		}
 }
