@@ -58,11 +58,14 @@ public class DetailedInvoiceReport {
         }
 
         // Address
-        System.out.printf("    Address: %s, %s %s %s%n",
-            comp.getAddress().getStreet(),
-            comp.getAddress().getCity(),
-            comp.getAddress().getState(),
-            comp.getAddress().getZip());
+        Address addr = comp.getAddress();
+        if (addr != null) {
+            System.out.printf("      %s%n", addr.getStreet());
+            System.out.printf("      %s %s %s%n",
+                addr.getCity(), addr.getState(), addr.getZip());
+        } else {
+            System.out.println("      (no address on file)");
+        }
     }
 
     private void printSalesPersonDetails(

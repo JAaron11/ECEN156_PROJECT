@@ -141,15 +141,45 @@ public class InvoiceData {
 	 */
 	public static void addCompany(UUID companyUuid, UUID contactUuid, String name, String street, String city,
 			String state, String zip) {
-		final String FIND_PERSON_SQL = "SELECT person_id FROM Person WHERE person_uuid = ?";
+		final String INSERT_ADDRESS_SQL = "INSERT INTO Address " + "(address_uuid, street, city, state_id, zip_id) "
+				+ "VALUES (?, ?, ?, " + "(SELECT state_id FROM State WHERE state_code = ?), "
+				+ "(SELECT zip_id   FROM ZipCode WHERE zip_code = ?))";
+
 		final String INSERT_COMPANY_SQL = "INSERT INTO Company "
 				+ "(company_uuid, company_name, company_type, primary_contact_id, address_id) "
-				+ "VALUES (?, ?, ?, ?, NULL)";
+				+ "VALUES (?, ?, ?, ?, ?)";
 
 		try (Connection conn = DatabaseUtils.getConnection()) {
-			// 1) lookup person_id for the contact
+			conn.setAutoCommit(false);
+
+			// ── 1) Maybe insert address ─────────────────────────────────────
+			Integer addressId = null;
+			// Only insert an Address if we have both a non-blank state and zip
+			if (state != null && !state.isBlank() && zip != null && !zip.isBlank()) {
+				try (PreparedStatement addrPs = conn.prepareStatement(INSERT_ADDRESS_SQL,
+						Statement.RETURN_GENERATED_KEYS)) {
+					addrPs.setString(1, UUID.randomUUID().toString());
+					addrPs.setString(2, street);
+					addrPs.setString(3, city);
+					addrPs.setString(4, state);
+					addrPs.setString(5, zip);
+					int rows = addrPs.executeUpdate();
+
+					if (rows > 0) {
+						try (ResultSet keys = addrPs.getGeneratedKeys()) {
+							if (keys.next()) {
+								addressId = keys.getInt(1);
+							}
+						}
+					}
+				} catch (SQLException e) {}
+			}
+
+			// ── 2) Lookup the person_id ─────────────────────────────────────
 			int personId;
-			try (PreparedStatement findPs = conn.prepareStatement(FIND_PERSON_SQL)) {
+			try (PreparedStatement findPs = conn
+					.prepareStatement("SELECT person_id FROM Person WHERE person_uuid = ?")) {
+
 				findPs.setString(1, contactUuid.toString());
 				try (ResultSet rs = findPs.executeQuery()) {
 					if (!rs.next()) {
@@ -159,17 +189,23 @@ public class InvoiceData {
 				}
 			}
 
-			// 2) insert the company (address_id left NULL)
-			try (PreparedStatement ps = conn.prepareStatement(INSERT_COMPANY_SQL)) {
-				ps.setString(1, companyUuid.toString());
-				ps.setString(2, name);
-				ps.setString(3, "Client"); // default type
-				ps.setInt(4, personId);
-				ps.executeUpdate();
+			// ── 3) Insert the Company ──────────────────────────────────────
+			try (PreparedStatement compPs = conn.prepareStatement(INSERT_COMPANY_SQL)) {
+				compPs.setString(1, companyUuid.toString());
+				compPs.setString(2, name);
+				compPs.setString(3, "Client");
+				compPs.setInt(4, personId);
+				if (addressId != null) {
+					compPs.setInt(5, addressId);
+				} else {
+					compPs.setNull(5, java.sql.Types.INTEGER);
+				}
+				compPs.executeUpdate();
 			}
 
+			conn.commit();
 		} catch (SQLException ex) {
-			throw new RuntimeException("Failed to add company: " + companyUuid, ex);
+			throw new RuntimeException("Failed to add company " + companyUuid, ex);
 		}
 	}
 
@@ -433,41 +469,36 @@ public class InvoiceData {
 	 * @param amount
 	 */
 	public static void addContractToInvoice(UUID invoiceUuid, UUID itemUuid, double amount) {
-		final String INSERT_LINE_SQL =
-		        "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) VALUES (?, " +
-		          "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), " +
-		          "(SELECT item_id    FROM Item    WHERE item_uuid    = ?)" +
-		        ")";
+		final String INSERT_LINE_SQL = "INSERT INTO InvoiceLine (line_uuid, invoice_id, item_id) VALUES (?, "
+				+ "(SELECT invoice_id FROM Invoice WHERE invoice_uuid = ?), "
+				+ "(SELECT item_id    FROM Item    WHERE item_uuid    = ?)" + ")";
 
-		    final String INSERT_SPEC_SQL =
-		        "INSERT INTO ContractSpec (line_id, vendor_company_id, contract_terms) VALUES (" +
-		          "LAST_INSERT_ID(), " +
-		          "(SELECT customer_company_id FROM Invoice WHERE invoice_uuid = ?), " +
-		          "?)";
+		final String INSERT_SPEC_SQL = "INSERT INTO ContractSpec (line_id, vendor_company_id, contract_terms) VALUES ("
+				+ "LAST_INSERT_ID(), " + "(SELECT customer_company_id FROM Invoice WHERE invoice_uuid = ?), " + "?)";
 
-		    try (Connection conn = DatabaseUtils.getConnection()) {
-		        conn.setAutoCommit(false);
-		        try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
-		             PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement linePs = conn.prepareStatement(INSERT_LINE_SQL);
+					PreparedStatement specPs = conn.prepareStatement(INSERT_SPEC_SQL)) {
 
-		            // 1) the InvoiceLine insert
-		            linePs.setString(1, UUID.randomUUID().toString());
-		            linePs.setString(2, invoiceUuid.toString());
-		            linePs.setString(3, itemUuid.toString());
-		            linePs.executeUpdate();
+				// 1) the InvoiceLine insert
+				linePs.setString(1, UUID.randomUUID().toString());
+				linePs.setString(2, invoiceUuid.toString());
+				linePs.setString(3, itemUuid.toString());
+				linePs.executeUpdate();
 
-		            // 2) the ContractSpec insert, using the invoice’s customer as the “vendor”
-		            specPs.setString(1, invoiceUuid.toString());
-		            specPs.setString(2, String.format("$%.2f", amount));
-		            specPs.executeUpdate();
+				// 2) the ContractSpec insert, using the invoice’s customer as the “vendor”
+				specPs.setString(1, invoiceUuid.toString());
+				specPs.setString(2, String.format("$%.2f", amount));
+				specPs.executeUpdate();
 
-		            conn.commit();
-		        } catch (SQLException e) {
-		            conn.rollback();
-		            throw e;
-		        }
-		    } catch (SQLException ex) {
-		        throw new RuntimeException("Failed to add contract to invoice " + invoiceUuid, ex);
-		    }
+				conn.commit();
+			} catch (SQLException e) {
+				conn.rollback();
+				throw e;
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException("Failed to add contract to invoice " + invoiceUuid, ex);
 		}
+	}
 }
