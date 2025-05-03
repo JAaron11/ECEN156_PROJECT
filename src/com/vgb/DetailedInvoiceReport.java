@@ -4,6 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Prints a detailed invoice report, falling back to the company address
+ * when the contact person has no address of their own.
+ */
 public class DetailedInvoiceReport {
     private static final SimpleDateFormat DATE_FMT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -46,8 +50,11 @@ public class DetailedInvoiceReport {
             comp.getName(),
             comp.getCompanyUuid());
 
-        // Contact person
-        Person contact = persons.get(comp.getContactUuid().toString());
+        // Contact person (may be null)
+        Person contact = null;
+        if (comp.getContactUuid() != null) {
+            contact = persons.get(comp.getContactUuid().toString());
+        }
         if (contact != null) {
             System.out.printf("    Contact: %s, %s (%s)%n",
                 contact.getLastName(),
@@ -57,8 +64,11 @@ public class DetailedInvoiceReport {
                 String.join(", ", contact.getEmails()));
         }
 
-        // Address
-        Address addr = comp.getAddress();
+        // Pick contact’s address if they have one, otherwise company’s
+        Address addr = (contact != null && contact.getAddress() != null)
+            ? contact.getAddress()
+            : comp.getAddress();
+
         if (addr != null) {
             System.out.printf("      %s%n", addr.getStreet());
             System.out.printf("      %s %s %s%n",

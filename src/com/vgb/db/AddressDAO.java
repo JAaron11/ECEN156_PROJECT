@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class AddressDAO {
-    // Only select the columns your Address(String, String, String, String) ctor needs:
     private static final String SEL_BY_ID =
         "SELECT street, city, state_id, zip_id FROM Address WHERE address_id = ?";
 

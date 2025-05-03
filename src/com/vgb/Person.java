@@ -13,6 +13,7 @@ public class Person {
 	private String lastName;
 	private String phoneNumber;
 	private List<String> emails;
+	private Address address;
 
 	public Person(UUID uuid, String firstName, String lastName, String phoneNumber, List<String> emails) {
 		this.uuid = uuid;
@@ -65,5 +66,12 @@ public class Person {
 	public void setEmails(List<String> emails) {
 		this.emails = emails;
 	}
+	
+	public void setAddress(Address address) {
+        this.address = address;
+    }
 
+    public Address getAddress() {
+        return address;
+    }
 }
