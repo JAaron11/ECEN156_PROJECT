@@ -42,7 +42,11 @@ public class InvoiceReport {
 
             // 4a) SummaryReport wants (List<Invoice>, Map<String,Companies>)
             SummaryReport summary = new SummaryReport();
-            summary.printReport(invoices, companiesByUuid);
+            summary.printByTotal(invoices, companiesByUuid);
+
+            summary.printByCustomer(invoices, companiesByUuid);
+
+            summary.printCustomerTotals(invoices, companiesByUuid);
 
             // 4b) CompanyReport wants (List<Invoice>, Map<String,Companies>) as well
             CompanyReport companyRpt = new CompanyReport();

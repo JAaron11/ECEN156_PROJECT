@@ -22,28 +22,28 @@ public class InvoiceData {
 	 * Removes all records from all tables in the database.
 	 */
 	public static void clearDatabase() {
-		String[] tables = { "LeaseSpec", "RentalSpec", "MaterialSpec", "ContractSpec", "EquipmentSpec", "InvoiceLine",
-				"Invoice", "Item", "Email", "Company", "Person", "Address", "ZipCode", "State" };
+	    String[] tables = {
+	        "LeaseSpec", "RentalSpec", "MaterialSpec", "ContractSpec",
+	        "EquipmentSpec", "InvoiceLine", "Invoice", "Item",
+	        "Email", "Company", "Person", "Address", "ZipCode", "State"
+	    };
 
-		try (Connection conn = DatabaseUtils.getConnection()) {
-			conn.setAutoCommit(false);
-			try (Statement stmt = conn.createStatement()) {
-				for (String table : tables) {
-					stmt.executeUpdate("delete from " + table);
-				}
-				conn.commit();
-			} catch (SQLException ex) {
-				// rollback if any delete fails
-				try {
-					conn.rollback();
-				} catch (SQLException rbEx) {
-					throw new RuntimeException("Failed to rollback after clearDatabase error", rbEx);
-				}
-				throw new RuntimeException("Failed to clear database", ex);
-			}
-		} catch (SQLException ex) {
-			throw new RuntimeException("Failed to clear database", ex);
-		}
+	    try (Connection conn = DatabaseUtils.getConnection()) {
+	        conn.setAutoCommit(false);
+
+	        // Use Statement, not PreparedStatement
+	        try (Statement stmt = conn.createStatement()) {
+	            for (String table : tables) {
+	                stmt.executeUpdate("DELETE FROM " + table);
+	            }
+	            conn.commit();
+	        } catch (SQLException ex) {
+	            conn.rollback();
+	            throw new RuntimeException("Failed to clear database", ex);
+	        }
+	    } catch (SQLException ex) {
+	        throw new RuntimeException("Failed to clear database", ex);
+	    }
 	}
 
 	/**
@@ -55,37 +55,27 @@ public class InvoiceData {
 	 * @param phone
 	 */
 	public static void addPerson(UUID personUuid, String firstName, String lastName, String phone) {
-		final String INSERT_SQL =
-			      "INSERT INTO Person (person_uuid, first_name, last_name, phone) VALUES (?, ?, ?, ?)";
-			    final String LINK_ADDRESS_SQL =
-			      "UPDATE Person p " +
-			      "  JOIN Address a ON a.address_uuid = p.person_uuid " +
-			      "SET p.address_id = a.address_id " +
-			      "WHERE p.person_uuid = ?";
+		final String INSERT_SQL = "INSERT INTO Person (person_uuid, first_name, last_name, phone) VALUES (?, ?, ?, ?)";
+		final String LINK_ADDRESS_SQL = "UPDATE Person p " + "  JOIN Address a ON a.address_uuid = p.person_uuid "
+				+ "SET p.address_id = a.address_id " + "WHERE p.person_uuid = ?";
 
-			    try (Connection conn = DatabaseUtils.getConnection()) {
-			        conn.setAutoCommit(false);
+		try (Connection conn = DatabaseUtils.getConnection()) {
+			conn.setAutoCommit(false);
 
-			        // 1) Insert the person row
-			        try (PreparedStatement ps = conn.prepareStatement(INSERT_SQL)) {
-			            ps.setString(1, personUuid.toString());
-			            ps.setString(2, firstName);
-			            ps.setString(3, lastName);
-			            ps.setString(4, phone);
-			            ps.executeUpdate();
-			        }
-
-			        // 2) Immediately link any Address where address_uuid = person_uuid
-			        try (PreparedStatement link = conn.prepareStatement(LINK_ADDRESS_SQL)) {
-			            link.setString(1, personUuid.toString());
-			            link.executeUpdate();
-			        }
-
-			        conn.commit();
-			    } catch (SQLException ex) {
-			        throw new RuntimeException("Failed to add person: " + personUuid, ex);
-			    }
+			// 1) Insert the person row
+			try (PreparedStatement ps = conn.prepareStatement(INSERT_SQL)) {
+				ps.setString(1, personUuid.toString());
+				ps.setString(2, firstName);
+				ps.setString(3, lastName);
+				ps.setString(4, phone);
+				ps.executeUpdate();
 			}
+
+			conn.commit();
+		} catch (SQLException ex) {
+			throw new RuntimeException("Failed to add person: " + personUuid, ex);
+		}
+	}
 
 	/**
 	 * Adds an email record corresponding person record corresponding to the
@@ -171,6 +161,10 @@ public class InvoiceData {
 						}
 					}
 				} catch (SQLException e) {
+					if (state == null || state.isBlank() || zip == null || zip.isBlank()) {
+						throw new IllegalArgumentException(
+								"Company " + companyUuid + " requires both state and zip code");
+					}
 				}
 			}
 
@@ -289,8 +283,9 @@ public class InvoiceData {
 			try (PreparedStatement ps = conn.prepareStatement(FIND_COMPANY_SQL)) {
 				ps.setString(1, customerUuid.toString());
 				try (ResultSet rs = ps.executeQuery()) {
-					if (!rs.next())
+					if (!rs.next()) {
 						throw new RuntimeException("No Company for " + customerUuid);
+					}
 					companyId = rs.getInt("company_id");
 				}
 			}
