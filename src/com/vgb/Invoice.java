@@ -104,8 +104,11 @@ public class Invoice {
 	 * @return The final total cost of the invoice rounded to two decimal places
 	 */
 	public double getGrandTotal() {
-		return Util.roundToTenths((getSubtotal() + getTaxTotal()));
-	}
+		double sum = items.stream()
+	            .mapToDouble(Item::calculateTotalCost)  // full‑precision line total
+	            .sum();
+	        return Util.roundToTenths(sum);        // round only once to 2 decimals
+	    }
 
 	/**
 	 * Provides a string representation of the invoice

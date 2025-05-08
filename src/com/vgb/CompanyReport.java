@@ -10,6 +10,9 @@ import com.vgb.SortedList;
 public class CompanyReport {
 
     /**
+     * Prints the Company Invoice Summary Report, including companies with zero invoices.
+     * Sorted by: total asc → count asc → name (CI) → UUID.
+     *
      * @param invoices         all invoices to include
      * @param companiesByUuid  map of company UUID (String) → Companies object
      */
@@ -17,21 +20,28 @@ public class CompanyReport {
         List<Invoice> invoices,
         Map<String, Companies> companiesByUuid
     ) {
-        // 1) Group invoices by customer UUID
-        Map<String, List<Invoice>> byCompany = invoices.stream()
-            .collect(Collectors.groupingBy(Invoice::getCustomer));
+        // 1) Aggregate counts & sums per company UUID
+        Map<String, Long> countMap = invoices.stream()
+            .collect(Collectors.groupingBy(
+                Invoice::getCustomer, Collectors.counting()));
+        Map<String, Double> sumMap = invoices.stream()
+            .collect(Collectors.groupingBy(
+                Invoice::getCustomer,
+                Collectors.summingDouble(Invoice::getGrandTotal)));
 
-        // 2) Comparator for UUID strings, by company name (case‑insensitive), then UUID
+        // 2) Comparator: total asc, then count asc, then name, then UUID
         Comparator<String> cmp = Comparator
-            .comparing((String uuid) -> {
+            .comparing((String uuid) -> sumMap.getOrDefault(uuid, 0.0))
+            .thenComparing((String uuid) -> countMap.getOrDefault(uuid, 0L))
+            .thenComparing((String uuid) -> {
                 Companies c = companiesByUuid.get(uuid);
                 return c != null ? c.getName() : "";
             }, String.CASE_INSENSITIVE_ORDER)
             .thenComparing(uuid -> uuid);
 
-        // 3) Build a SortedList<String> of company UUIDs
+        // 3) Build a SortedList of all company UUIDs
         SortedList<String> sortedUuids = new SortedList<>(cmp);
-        sortedUuids.addAll(byCompany.keySet());
+        sortedUuids.addAll(companiesByUuid.keySet());
 
         // 4) Print header
         System.out.println("+---------------------------------------------------------------------------------+");
@@ -44,18 +54,14 @@ public class CompanyReport {
         // 5) Iterate in sorted order
         int totalInvoices = 0;
         double grandTotal = 0.0;
-        for (String companyUuid : sortedUuids) {
-            List<Invoice> list = byCompany.get(companyUuid);
-            Companies comp    = companiesByUuid.get(companyUuid);
-
-            String name       = comp != null ? comp.getName() : "<Unknown>";
-            int    count      = list.size();
-            double sum        = list.stream()
-                                    .mapToDouble(Invoice::getGrandTotal)
-                                    .sum();
+        for (String uuid : sortedUuids) {
+            Companies comp = companiesByUuid.get(uuid);
+            String name    = comp != null ? comp.getName() : "<Unknown>";
+            long   count   = countMap.getOrDefault(uuid, 0L);
+            double sum     = sumMap.getOrDefault(uuid, 0.0);
 
             System.out.printf("%-36s  %-30s  %8d  $%10.2f%n",
-                              companyUuid, name, count, sum);
+                              uuid, name, count, sum);
 
             totalInvoices += count;
             grandTotal    += sum;

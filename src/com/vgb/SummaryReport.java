@@ -61,7 +61,7 @@ public class SummaryReport {
 				"Overall Totals:", overallItems, overallTax, overallTotal);
 	}
 
-	/** Invoices by grand‑total descending. */
+	/** Invoices by grand-total descending. */
 	public void printByTotal(List<Invoice> invoices, Map<String, Companies> companies) {
 		Comparator<Invoice> cmp = Comparator.comparing(Invoice::getGrandTotal).reversed()
 				.thenComparing(inv -> inv.getInvoiceId().toString());
@@ -101,7 +101,7 @@ public class SummaryReport {
 		System.out.println();
 	}
 
-	/** Invoices by customer name A→Z. */
+	/** Invoices by customer name A to Z. */
 	public void printByCustomer(List<Invoice> invoices, Map<String, Companies> companies) {
 		Comparator<Invoice> cmp = Comparator.comparing((Invoice inv) -> {
 			Companies c = companies.get(inv.getCustomer());
@@ -123,35 +123,5 @@ public class SummaryReport {
 			System.out.printf("%-36s  %-30s  $%10.2f%n", inv.getInvoiceId(), name, total);
 		}
 		System.out.println();
-	}
-
-	/** Customer invoice totals, including zero‑invoice companies. */
-	public void printCustomerTotals(List<Invoice> invoices, Map<String, Companies> companiesByUuid) {
-		Map<String, Long> countMap = invoices.stream()
-				.collect(Collectors.groupingBy(Invoice::getCustomer, Collectors.counting()));
-		Map<String, Double> sumMap = invoices.stream()
-				.collect(Collectors.groupingBy(Invoice::getCustomer, Collectors.summingDouble(Invoice::getGrandTotal)));
-
-		Comparator<String> cmp = Comparator.comparing((String uuid) -> {
-			Companies c = companiesByUuid.get(uuid);
-			return c != null ? c.getName() : uuid;
-		}, String.CASE_INSENSITIVE_ORDER).thenComparing(uuid -> uuid);
-		SortedList<String> sortedUuids = new SortedList<>(cmp);
-		sortedUuids.addAll(companiesByUuid.keySet());
-
-		System.out.println("+-------------------------------------------------------------------------+");
-		System.out.println("|                      Customer Invoice Totals                            |");
-		System.out.println("+-------------------------------------------------------------------------+");
-		System.out.printf("%-25s  %-24s  %10s%n", "Customer", "#Invoices", "Total");
-
-		for (String uuid : sortedUuids) {
-			Companies comp = companiesByUuid.get(uuid);
-			String name = comp != null ? comp.getName() : uuid;
-			long cnt = countMap.getOrDefault(uuid, 0L);
-			double total = sumMap.getOrDefault(uuid, 0.0);
-
-			System.out.printf("%-25s  %24d  $%10.2f%n", name, cnt, total);
-		}
-		System.out.println("+-------------------------------------------------------------------------+");
 	}
 }
